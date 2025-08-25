@@ -1,0 +1,232 @@
+/* css/styles.css */
+
+/* --- RESET Y ESTILOS GLOBALES --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
+/* --- HEADER Y NAVEGACIÓN --- */
+.main-header {
+    background: #fff;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+}
+
+.main-nav a {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+.main-nav a:hover {
+    color: #8B4513; /* Color madera */
+}
+
+#cart-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+#cart-counter {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #d9534f;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* --- HERO BANNER (Página de Inicio) --- */
+.hero {
+    background: url('https://via.placeholder.com/1200x400.png?text=Muebles+de+Autor') no-repeat center center/cover;
+    height: 60vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- SECCIONES GENÉRICAS --- */
+.section {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* --- GRILLA DE PRODUCTOS (Destacados y Catálogo) --- */
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    width: 250px;
+    transition: box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: inline-block;
+    background: #8B4513;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #A0522D;
+}
+
+/* --- PÁGINA DE DETALLE DE PRODUCTO --- */
+.producto-detalle {
+    display: flex;
+    flex-direction: column; /* Mobile first */
+    gap: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.producto-detalle-img img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.producto-detalle-info .precio {
+    font-size: 1.5rem;
+    color: #8B4513;
+    margin: 10px 0;
+}
+
+/* --- PÁGINA DE CONTACTO Y FORMULARIO --- */
+#search-input,
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#search-input {
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+    display: block;
+}
+
+.form-mensaje {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.form-mensaje.exito {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.form-mensaje.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+
+/* --- FOOTER --- */
+.main-footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+/* --- MEDIA QUERIES PARA RESPONSIVE (Desktop) --- */
+@media (min-width: 768px) {
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+    .producto-detalle {
+        flex-direction: row; /* Cambia a layout horizontal en desktop */
+    }
+
+    .producto-detalle-img,
+    .producto-detalle-info {
+        flex: 1;
+    }
+}
