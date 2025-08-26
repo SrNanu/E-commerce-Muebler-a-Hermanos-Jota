@@ -9,6 +9,7 @@
 
 # Funcionalidades:
 #   - Buscar productos en catalogo
+#   - Ver detalles del producto seleccionado
 #   - Contactar a empleado de la tienda
 #   - Agregar productos al carrito
 

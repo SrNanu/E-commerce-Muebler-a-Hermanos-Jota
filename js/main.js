@@ -18,8 +18,10 @@ function actualizarCarrito() {
     const el = document.getElementById('contadorCarrito');
     if (el) el.textContent = carrito.length;
 }
-
 function agregarAlCarrito(id) {
+    if (carrito.includes(id)) {
+        if (!confirm('El producto ya está en el carrito. ¿Desea agregarlo nuevamente?')) return;
+    }
     carrito.push(id);
     guardarCarrito();
     actualizarCarrito();
