@@ -19,23 +19,22 @@ body {
     padding: 0;
 }
 
-/* Navbar */
 .navbar {
-    padding: clamp(0.5rem, 1.5vw, 1rem) 1rem; /* padding vertical fluido */
-    font-size: clamp(0.8rem, 1vw, 1.2rem);   /* tamaño de texto adaptativo */
+    padding: clamp(0.5rem, 1.5vw, 1rem) 1rem; 
+    font-size: clamp(0.8rem, 1vw, 1.2rem); 
 }
 
 .navbar-brand {
-    font-size: clamp(1rem, 2vw, 1.5rem); /* tamaño del logo/texto de marca */
+    font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 .navbar img {
-    width: clamp(30px, 3vw, 40px);  /* logo adaptable */
+    width: clamp(30px, 3vw, 40px);
     height: auto;
 }
 
 .navbar-nav .nav-link {
-    font-size: clamp(0.8rem, 1vw, 1rem); /* enlaces adaptativos */
+    font-size: clamp(0.8rem, 1vw, 1rem);
     padding: 0.5rem 0.75rem;
 }
 
@@ -47,36 +46,4 @@ body {
 .navbar-toggler-icon {
     width: 100%;
     height: 100%;
-}
-
-
-/* Hero */
-.hero {
-    color: var(--color-siena-tostado);
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    background: rgba(105, 101, 95, 0.3);
-    width: 100%; height: 100%;
-    z-index: 1;
-}
-
-.container-hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    text-align: center;
-    width: clamp(55%, 60vw, 80%);
-    max-width: 800px;
-    background: #f3e6d979;
-    padding: clamp(0.8rem, 2vw, 2rem);
-    font-size: clamp(0.8rem, 1.2vw, 1.5rem);
 }
