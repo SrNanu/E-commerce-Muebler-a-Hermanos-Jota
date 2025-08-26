@@ -15,33 +15,24 @@
         <link rel="stylesheet" href="css/producto.css">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <img src="img/logo.svg" alt="" width="40" height="40" class="d-inline-block align-text-top me-2">
-                <a class="navbar-brand fw-bold" href="index.html">Mueblería Jota</a>
-                
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="productos.html">Catalogo</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-cart"></i></a></li>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg fixed-top">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo.svg" alt="Logo Hermanos Jota" class="me-2" width="40" height="40">
+                Mueblería Jota
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end px-4 " id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Catálogo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart"><span id="contadorCarrito" class="text-warning">0</span></i></a></li>
+                </ul>
             </div>
-        </nav> 
+        </div>
+    </nav>
         
         <div class="container mt-5 pt-5">
             <div class="card mb-3 mx-auto shadow" style="max-width: 900px;">
@@ -57,6 +48,7 @@
         <!-- Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <!-- JS -->
+        <script src="js/main.js"></script>
         <script src="js/productos.js"></script>
         <script src="js/producto.js"></script>
     </body>

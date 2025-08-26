@@ -7,11 +7,6 @@ function mostrarProductos(_productos) {
     _productos.forEach(producto => {
         const card = document.createElement('div');
         card.className = 'col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mx-auto mb-4';
-        
-        let atributosHTML = "";
-        producto.atributos.forEach(attr => {
-            atributosHTML += `<p class="mb-1"><strong>${attr.nombre}:</strong> ${attr.valor}</p>`;
-        });
 
         card.innerHTML = `
             <div class="card border-0 shadow-sm">
@@ -20,7 +15,7 @@ function mostrarProductos(_productos) {
                     <div class="card-body">
                         <h5 class="card-title">${producto.titulo}</h5>
                         <p class="card-text d-none d-md-block">${producto.texto}</p>
-                        <div class="atributos">${atributosHTML}</div>
+                        
                     </div>
                 </a>
                 <div class="card-footer bg-white border-0">
