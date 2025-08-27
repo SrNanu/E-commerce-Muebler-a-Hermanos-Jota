@@ -1,5 +1,5 @@
 .card {
-    border: none;
+    border-color: #a0512d73;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
@@ -37,6 +37,10 @@
     margin: 0.8rem 0 0.4rem;
 }
 
+.card-footer{
+    background-color: transparent;
+}
+
 .card-text {
     font-family: var(--font-primary);
     font-weight: var(--weight-regular);
@@ -54,8 +58,6 @@
     font-size: 0.85rem;
     border: 1px solid var(--color-siena-tostado);
     border-radius: 8px;
-    padding: 0.5rem 0.75rem;
-    margin-bottom: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

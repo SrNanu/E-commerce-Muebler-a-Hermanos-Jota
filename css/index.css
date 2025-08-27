@@ -77,7 +77,7 @@
     text-align: center;
     width: clamp(55%, 60vw, 80%);
     max-width: 800px;
-    background: var(--color-alabastro-calido);
+    background: #f5e6d3b7;
     padding: clamp(0.8rem, 2vw, 2rem);
     border-radius: 12px;
 }

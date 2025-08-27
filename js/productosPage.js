@@ -1,19 +1,19 @@
 const catalogo = document.getElementById("catalogo-productos");
-const inputBuscar = document.querySelector('input[type="search"]');
+const botonBuscar = document.querySelector('button[type="submit"]');
 
 function mostrarProductos(_productos) {
-  catalogo.innerHTML = "";
+    catalogo.innerHTML = "";
 
-  if (_productos.length === 0) {
+    if (_productos.length === 0) {
     catalogo.innerHTML = `<p class="text-center mt-4">No se encontraron resultados</p>`;
-  } else {
+    } else {
     _productos.forEach((producto) => {
-      const card = document.createElement("div");
-      card.className =
+        const card = document.createElement("div");
+        card.className =
         "col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mx-auto mb-4";
 
-      card.innerHTML = `
-                <div class="card border-0 shadow-sm">
+        card.innerHTML = `
+                <div class="card shadow-sm">
                     <a href="producto.html?id=${producto.id}" class="text-decoration-none text-dark">
                         <img src="${producto.imagen}" class="card-img-top" alt="${producto.titulo}">
                         <div class="card-body">
@@ -22,25 +22,26 @@ function mostrarProductos(_productos) {
                             
                         </div>
                     </a>
-                    <div class="card-footer bg-white border-0">
-                        <button class="btn btn-outline-primary w-100" onclick="agregarAlCarrito(${producto.id})">Añadir al Carrito</button>
+                    <div class="card-footer border-0">
+                        <button class="btn w-100" onclick="agregarAlCarrito(${producto.id})">Añadir al Carrito</button>
                     </div>
                 </div>
             `;
-      catalogo.appendChild(card);
+        catalogo.appendChild(card);
     });
-  }
+    } 
 }
 
 mostrarProductos(productos);
 
-inputBuscar.addEventListener("input", () => {
-  const texto = inputBuscar.value.toLowerCase();
-  const filtrados = productos.filter(
+botonBuscar.addEventListener("click", () => {
+    const inputBuscar = document.querySelector('input[type="search"]');
+    const texto = inputBuscar.value.toLowerCase();
+    const filtrados = productos.filter(
     (p) =>
-      p.titulo.toLowerCase().includes(texto) ||
-      p.texto.toLowerCase().includes(texto) ||
-      p.atributos.some((attr) => attr.valor.toLowerCase().includes(texto))
-  );
-  mostrarProductos(filtrados);
+        p.titulo.toLowerCase().includes(texto) ||
+        p.texto.toLowerCase().includes(texto) ||
+        p.atributos.some((attr) => attr.valor.toLowerCase().includes(texto))
+    );
+    mostrarProductos(filtrados);
 });

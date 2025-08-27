@@ -45,11 +45,20 @@ body {
 }
 
 .navbar-collapse {
+    width: 20%;
     background-color: #a0512d80;
     backdrop-filter: blur(5px);
     padding: 0.6rem;
+    justify-content: end;
     border-radius: 8px;
 }
+
+@media (max-width: 992px) {
+    .navbar-collapse {
+        text-align: center;
+    }
+}
+
 .navbar-collapse .nav-link {
     color: var(--color-alabastro-calido) !important;
 }
