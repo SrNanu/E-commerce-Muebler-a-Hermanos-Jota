@@ -34,14 +34,18 @@ function mostrarProductos(_productos) {
 
 mostrarProductos(productos);
 
-botonBuscar.addEventListener("click", () => {
+botonBuscar.addEventListener("click", (event) => {
+    event.preventDefault(); 
+
     const inputBuscar = document.querySelector('input[type="search"]');
     const texto = inputBuscar.value.toLowerCase();
+
     const filtrados = productos.filter(
     (p) =>
         p.titulo.toLowerCase().includes(texto) ||
         p.texto.toLowerCase().includes(texto) ||
         p.atributos.some((attr) => attr.valor.toLowerCase().includes(texto))
     );
+    
     mostrarProductos(filtrados);
 });
