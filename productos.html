@@ -1,42 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mueblería Jota</title>
-        <link rel="icon" href="img/logo.svg" type="image/svg+xml">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/styles.css">
-        <link rel="stylesheet" href="css/productos.css">
-    </head>
-    <body>
-        <header></header>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mueblería Jota</title>
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/productos.css">
+</head>
+<body>
+    <header></header>
 
+    <main>
         <section id="Catalogo" class="py-5">
             <div class="container text-center mt-5">
                 <h2 class="fw-bold">Nuestro Catálogo</h2>
                 <p class="text-muted mb-4">Descubre la colección completa de Mueblería Jota, donde cada pieza es una obra de arte funcional.</p>
             </div>
-            <nav class="navbar bg-body-tertiary row">
-                    <form class="d-flex justify-content-center " role="search">
-                        <input class="form-control" type="search" placeholder="Buscar" aria-label="Search"/>
-                        <button class="btn btn-dark ms-4" type="submit">Buscar</button>
-                    </form>
-            </nav>
-            <div class="container mt-5">
-                <div class="row g-4" id="catalogo-productos"> 
-                </div>
-            </div>        
+
+            <div class="container">
+                <form class="d-flex justify-content-center mb-4" role="search">
+                    <input class="form-control" type="search" placeholder="Buscar" aria-label="Buscar">
+                    <button class="btn btn-dark ms-4" type="submit">Buscar</button>
+                </form>
+            </div>
+
+            <div class="container">
+                <div class="row g-4" id="catalogo-productos"></div>
+            </div>
         </section>
-        
-        <footer></footer>
+    </main>
 
+    <footer></footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-        <script src="js/main.js"></script>
-        <script src="js/productos.js"></script>
-        <script src="js/productosPage.js"></script>
-        <script>cargarHeaderFooter();</script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/productos.js"></script>
+    <script src="js/productosPage.js"></script>
+    <script>cargarHeaderFooter();</script>
+</body>
 </html>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mueblería Jota</title>
     <link rel="icon" href="img/logo.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/index.css">
@@ -13,32 +13,40 @@
 <body>
     <header></header>
 
-    <section id="Inicio" class="hero d-flex align-items-center justify-content-center text-center">
-        <div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active"><img src="img/hero/fondo 1.jpg" class="d-block w-100" data-bs-interval="20" alt="Fondo 1"></div>
-                <div class="carousel-item"><img src="img/hero/fondo 2.jpg" class="d-block w-100" data-bs-interval="20" alt="Fondo 2"></div>
-                <div class="carousel-item"><img src="img/hero/fondo 3.jpg" class="d-block w-100" data-bs-interval="20" alt="Fondo 3"></div>
+    <main>
+        <section id="Inicio" class="hero d-flex align-items-center justify-content-center text-center">
+            <div id="carouselExample" class="carousel slide mt-5" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="img/hero/fondo 1.jpg" class="d-block w-100" alt="Fondo 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/hero/fondo 2.jpg" class="d-block w-100" alt="Fondo 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/hero/fondo 3.jpg" class="d-block w-100" alt="Fondo 3">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-            </button>
-        </div>
-        <div class="container-hero-text">
-            <h1 class="titulo-principal">Calidad y Diseño en Cada Pieza</h1>
-            <p class="texto mb-4">"Cada pieza cuenta la historia de manos expertas y materiales nobles"</p>
-            <a href="productos.html" class="btn cta">Explorar Catálogo</a>
-        </div>
-    </section>
+            <div class="container-hero-text">
+                <h1 class="titulo-principal">Calidad y Diseño en Cada Pieza</h1>
+                <p class="texto mb-4">"Cada pieza cuenta la historia de manos expertas y materiales nobles"</p>
+                <a href="productos.html" class="btn cta">Explorar Catálogo</a>
+            </div>
+        </section>
+    </main>
 
     <footer></footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
     <script>cargarHeaderFooter();</script>
