@@ -20,7 +20,6 @@ function mostrarProductos(_productos) {
     _productos.forEach((producto) => {
         const tarjeta = document.createElement("div");
         tarjeta.className = "col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mx-auto mb-4";
-
         tarjeta.innerHTML = `
             <div class="card shadow-sm">
                 <a href="producto.html?id=${producto.id}" class="text-decoration-none text-dark">
