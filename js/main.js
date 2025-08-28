@@ -1,13 +1,18 @@
 let carrito = [];
 
-function cargarHeaderFooter() {
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => document.querySelector('header').innerHTML = data);
+async function cargarHeaderFooter() {
+    try {
+        const headerResponse = await fetch('header.html');
+        const headerHTML = await headerResponse.text();
+        document.querySelector('header').innerHTML = headerHTML;
 
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => document.querySelector('footer').innerHTML = data);
+        const footerResponse = await fetch('footer.html');
+        const footerHTML = await footerResponse.text();
+        document.querySelector('footer').innerHTML = footerHTML;
+        actualizarCarrito();
+    } catch (error) {
+        console.error("Error cargando header/footer:", error);
+    }
 }
 
 function cargarCarrito() {
@@ -16,8 +21,8 @@ function cargarCarrito() {
         carrito = raw ? JSON.parse(raw) : [];
     } catch (e) {
         carrito = [];
+        console.error("Error leyendo carrito:", e);
     }
-    actualizarCarrito();
 }
 
 function guardarCarrito() {
@@ -25,9 +30,10 @@ function guardarCarrito() {
 }
 
 function actualizarCarrito() {
-    const el = document.getElementById('contadorCarrito');
-    if (el) el.textContent = carrito.length;
+    const contador = document.getElementById('contadorCarrito');
+    if (contador) contador.textContent = carrito.length;
 }
+
 function agregarAlCarrito(id) {
     if (carrito.includes(id)) {
         if (!confirm('El producto ya está en el carrito. ¿Desea agregarlo nuevamente?')) return;
@@ -37,4 +43,7 @@ function agregarAlCarrito(id) {
     actualizarCarrito();
 }
 
-document.addEventListener('DOMContentLoaded', cargarCarrito);
+document.addEventListener('DOMContentLoaded', () => {
+    cargarHeaderFooter();
+    cargarCarrito();
+});

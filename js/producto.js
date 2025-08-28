@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     function getQueryParam(parametro) {
         const params = new URLSearchParams(window.location.search);
         return params.get(parametro);
@@ -7,17 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const id = parseInt(getQueryParam('id'), 10);
     const cont = document.getElementById('productoDetalle');
 
-    const producto = productos.find(p => p.id === id);
+    cont.innerHTML = `<div class="text-center my-5">Cargando producto...</div>`;
+
+    const _productos = await new Promise((resolve) => {
+        setTimeout(() => resolve(productos), 500);
+    });
+
+    const producto = _productos.find(p => p.id === id);
 
     if (!producto) {
         cont.innerHTML = '<div class="alert alert-danger">Producto no encontrado.</div>';
         return;
     }
 
-    let atributosHTML = '';
-    producto.atributos.forEach(attr => {
-        atributosHTML += `<li class="list-group-item"><strong>${attr.nombre}:</strong> ${attr.valor}</li>`;
-    });
+    const atributosHTML = producto.atributos.map(attr => `
+        <li class="list-group-item"><strong>${attr.nombre}:</strong> ${attr.valor}</li>
+    `).join('');
 
     cont.innerHTML = `
         <div class="row g-0">
