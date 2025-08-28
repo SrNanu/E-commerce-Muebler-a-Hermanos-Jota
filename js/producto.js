@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    function getQueryParam(parametro) {
+    function obtenerParametroUrl(parametro) {
         const params = new URLSearchParams(window.location.search);
         return params.get(parametro);
     }
 
-    const id = parseInt(getQueryParam('id'), 10);
-    const cont = document.getElementById('productoDetalle');
+    const id = parseInt(obtenerParametroUrl('id'), 10);
+    const cont = document.querySelector('#productoDetalle');
 
     cont.innerHTML = `<div class="text-center my-5">Cargando producto...</div>`;
 

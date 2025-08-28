@@ -1,6 +1,6 @@
-const catalogo = document.getElementById("catalogo-productos");
-const inputBuscar = document.querySelector('input[type="search"]');
-const botonBuscar = document.querySelector('button[type="submit"]');
+const catalogo = document.querySelector("#catalogo-productos");
+const inputBuscar = document.querySelector("#buscador");
+const botonBuscar = document.querySelector("#boton-buscar");
 let arrayProductos = [];
 
 function simularCargaProductos() {

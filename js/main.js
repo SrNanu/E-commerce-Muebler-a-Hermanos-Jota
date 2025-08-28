@@ -30,7 +30,7 @@ function guardarCarrito() {
 }
 
 function actualizarCarrito() {
-    const contador = document.getElementById('contadorCarrito');
+    const contador = document.querySelector('#contadorCarrito');
     if (contador) contador.textContent = carrito.length;
 }
 
