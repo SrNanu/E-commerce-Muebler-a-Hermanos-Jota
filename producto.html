@@ -11,32 +11,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/productos.css">
+    <link rel="stylesheet" href="css/producto.css">
 
     <script src="js/main.js" defer></script>
     <script src="js/productos.js" defer></script>
-    <script src="js/productosPage.js" defer></script>
+    <script src="js/producto.js" defer></script>
 </head>
 <body>
     <header></header>
 
     <main>
-        <section id="Catalogo" class="py-5">
-            <div class="container text-center mt-5">
-                <h2 class="fw-bold">Nuestro Catálogo</h2>
-                <p class="text-muted mb-4">Descubre la colección completa de Mueblería Jota, donde cada pieza es una obra de arte funcional.</p>
-            </div>
-
-            <div class="container">
-                <form class="d-flex justify-content-center mb-4" role="search">
-                    <input id="buscador" class="form-control" type="search" placeholder="Buscar" aria-label="Buscar">
-                    <button id="boton-buscar" class="btn btn-dark ms-4" type="submit">Buscar</button>
-                </form>
-            </div>
-
-            <div class="container">
-                <div class="row g-4" id="catalogo-productos"></div>
-            </div>
+        <section class="container mt-5 pt-5">
+            <article class="card mb-3 mx-auto shadow" style="max-width: 900px;">
+                <div id="productoDetalle"></div>
+            </article>
         </section>
     </main>
 

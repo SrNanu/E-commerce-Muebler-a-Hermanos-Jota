@@ -1,93 +1,9 @@
-:root{
-    --color-siena-tostado: #A0522D; /*Color principal de marca, títulos principales*/
-    --color-verde-salvia: #87A96B; /*Acento secundario, sustentabilidad*/
-    --color-alabastro-calido: #F3E6D9; /*Fondos principales, fotografía*/
-    --color-vara-de-oro: #D4A437; /*Detalles premium, acentos*/
-    --color-rosa-polvoriento: #C47A6D; /*Acentos suaves, detalles femeninos*/
-}
-
-html {
-    background-color: var(--color-alabastro-calido);
-    scroll-behavior: smooth;
-}
-
-body {
-    background-color: var(--color-alabastro-calido);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-/* Navbar */
-.navbar {
-    padding: clamp(0.5rem, 1.5vw, 1rem) 1rem; /* padding vertical fluido */
-    font-size: clamp(0.8rem, 1vw, 1.2rem);   /* tamaño de texto adaptativo */
-}
-
-.navbar-brand {
-    font-size: clamp(1rem, 2vw, 1.5rem); /* tamaño del logo/texto de marca */
-}
-
-.navbar img {
-    width: clamp(30px, 3vw, 40px);  /* logo adaptable */
-    height: auto;
-}
-
-.navbar-nav .nav-link {
-    font-size: clamp(0.8rem, 1vw, 1rem); /* enlaces adaptativos */
-    padding: 0.5rem 0.75rem;
-}
-
-.navbar-toggler {
-    width: clamp(35px, 5vw, 50px);
-    height: clamp(35px, 5vw, 50px);
-}
-
-.navbar-toggler-icon {
-    width: 100%;
-    height: 100%;
-}
-
-/* Hero */
-.hero {
-    color: var(--color-siena-tostado);
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    background: rgba(105, 101, 95, 0.3);
-    width: 100%; height: 100%;
-    z-index: 1;
-}
-
-.container-hero-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    text-align: center;
-    width: clamp(55%, 60vw, 80%);
-    max-width: 800px;
-    background: #f3e6d979;
-    padding: clamp(0.8rem, 2vw, 2rem);
-    font-size: clamp(0.8rem, 1.2vw, 1.5rem);
-}
-
-/* Carousel styling */
-.carousel {
+.carousel {    
     width: 90%;
+    max-width: 1400px;
     height: 90vh;
-    position: absolute;
-    top: 4vh;
-    left: 5%;
-    z-index: 1;
+    position: relative;
+    margin: 4vh auto 0 auto;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -134,13 +50,67 @@ body {
     height: clamp(12px, 2vw, 20px);
 }
 
-/* tarjetas */
-.card {
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+.hero {
+    color: var(--color-siena-tostado);
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
-.card:hover {
-    transform: translateY(-5px);
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(160, 82, 45, 0.3);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.container-hero-text {    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
+    width: clamp(55%, 60vw, 80%);
+    max-width: 800px;
+    background: #f5e6d3b7;
+    padding: clamp(0.8rem, 2vw, 2rem);
+    border-radius: 12px;
+}
+
+.container-hero-text h1 {
+    font-family: var(--font-secondary);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: 1rem;
+}
+
+.container-hero-text p {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-regular);
+    font-size: clamp(0.9rem, 1.2vw, 1.5rem);
+    margin-bottom: 1.5rem;
+}
+
+.container-hero-text .btn {
+    background-color: var(--color-siena-tostado);
+    color: #fff;
+    font-family: var(--font-primary);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.container-hero-text .btn:hover {
+    background-color: var(--color-vara-de-oro);
 }
