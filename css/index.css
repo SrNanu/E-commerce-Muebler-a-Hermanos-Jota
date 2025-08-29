@@ -144,3 +144,64 @@ body {
 .card:hover {
     transform: translateY(-5px);
 }
+
+.buscar{
+   position: relative;
+   padding: 10px;
+   padding-right: 35px;
+   border-radius: 5px 0 0 5px;
+   justify-content: center;
+   display: flex;
+   align-items: center;
+   
+
+}
+.buscar input{
+    width: 240px;
+    height: 40px;
+    padding: 0 30px;
+    font-size: 18px;
+    color: black;
+    outline: none;
+    border: 1px solid silver;
+    border-radius: 30px;
+
+}
+.boton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: blue;
+   
+    width: 55px;
+    height: 55px;
+    line-height: 55px;
+}
+
+.elemento{
+
+    box-sizing: border-box;
+    width: 400px;
+    padding: 25px;
+    border: 1px solid #cccccc;
+    box-shadow: 5px 5px 10px #e0e0e0;
+    margin: 40px auto;
+
+}
+
+.destacados{
+
+    display: flex;
+    align-items:  center;
+    flex-direction: column;
+}
+
+.elementos-tot{
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
