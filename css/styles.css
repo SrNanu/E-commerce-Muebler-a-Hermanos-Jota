@@ -1,7 +1,7 @@
 /* Header Moderno */
 header {
     width: 100%;
-    background: none;
+    background: #DABAA0;
     margin-bottom: 24px;
     padding-top: 0;
     padding-bottom: 0;
@@ -12,7 +12,7 @@ header {
 }
 
 .navbar {
-    background: var(--color-rosa-polvoriento) !important;
+    background: var(--color-alabastro-calido) !important;
     box-shadow: 0 4px 16px rgba(160, 82, 45, 0.12);
     border-radius: 0 0 18px 18px;
     padding: 8px 32px;
