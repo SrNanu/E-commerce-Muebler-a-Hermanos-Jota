@@ -1,3 +1,69 @@
+/* Header Moderno */
+header {
+    width: 100%;
+    background: var(--color-rosa-polvoriento);
+    box-shadow: 0 4px 16px rgba(160, 82, 45, 0.12);
+    border-radius: 0 0 18px 18px;
+    margin-bottom: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.navbar {
+    background: none !important;
+    padding: 8px 32px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-family: var(--font-secondary);
+    font-size: 2rem;
+    font-weight: var(--weight-bold);
+    color: #6B2E13 !important;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-nav {
+    margin-left: auto;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-link {
+    color: #F5E6D3 !important;
+    font-size: 1.1rem;
+    font-weight: var(--weight-medium);
+    transition: color 0.2s, text-shadow 0.2s;
+    position: relative;
+}
+.nav-link.active,
+.nav-link:hover {
+    color: var(--color-vara-de-oro) !important;
+    text-shadow: 0 2px 8px rgba(212, 164, 55, 0.15);
+}
+
+.navbar-toggler {
+    border: none;
+    background: #C47A6D;
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3e%3cpath stroke='white' stroke-width='2' d='M4 8h24M4 16h24M4 24h24'/%3e%3c/svg%3e");
+}
+
+#contadorCarrito {
+    font-weight: var(--weight-bold);
+    color: var(--color-vara-de-oro);
+    margin-left: 2px;
+}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap');
 
 :root {
