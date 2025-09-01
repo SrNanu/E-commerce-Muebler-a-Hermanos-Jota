@@ -155,4 +155,6 @@ const productos = [
             { nombre: "Certificación", valor: "Ergonomía europea EN 1335" }
         ]
     }
+    
 ];
+window.productos = productos;
