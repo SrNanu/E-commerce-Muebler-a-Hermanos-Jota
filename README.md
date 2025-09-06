@@ -5,6 +5,11 @@ Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa fic
 
 ---
 
+## 🌐 Demo desplegada
+🔗 [Ver proyecto desplegado](https://juan-nogueira.github.io/Muebleria-Hermanos-Jota)
+
+---
+
 ## 👥 Integrantes del proyecto
 - Juan Nogueira  
 - Lautaro Smyth  
@@ -37,4 +42,5 @@ Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa fic
 ## 🚀 Instalación y uso
 1. Clonar este repositorio:  
    ```bash
-   git clone https://github.com/usuario/E-commerce-Muebleria-Hermanos-Jota.git
+   git clone https://github.com/SrNanu/E-commerce-Muebler-a-Hermanos-Jota
+
