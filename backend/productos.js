@@ -1,4 +1,4 @@
-const productos = [
+const products = [
   {
     id: 1,
     imagen: "img/productos/Aparador Uspallata.png",
@@ -184,4 +184,4 @@ const productos = [
   },
 ];
 
-module.exports = productos;
+module.exports = products;
