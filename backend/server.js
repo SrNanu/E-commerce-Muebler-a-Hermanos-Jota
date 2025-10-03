@@ -1,8 +1,10 @@
 const express = require('express')
+const logger = require('./logger')
 const app = express()
 const PORT = process.env.PORT || 4000
 const products = require('./productos') 
 
+app.use(logger)
 app.use(express.json())
 
 app.get('/api/productos', (req, res) => {
