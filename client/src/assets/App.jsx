@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import ProductList from '../components/ProductList';
 import '../styles/App.css';
 
@@ -11,7 +10,6 @@ function App() {
       <main className="container py-4">
         <ProductList />
       </main>
-      <Footer />
     </div>
   );
 }

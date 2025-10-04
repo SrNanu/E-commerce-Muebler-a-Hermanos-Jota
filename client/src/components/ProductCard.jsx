@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
   return (
     <div className="col">
       <div className="card h-100 shadow-sm">
-        <img src={`/${imagen}`} className="card-img-top" alt={titulo} />
+        <img src={`http://localhost:4000/${imagen}`} className="card-img-top" alt={titulo} />
         <div className="card-body">
           <h5 className="card-title">{titulo}</h5>
           <p className="card-text">{texto}</p>
