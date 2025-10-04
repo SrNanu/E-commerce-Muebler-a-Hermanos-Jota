@@ -1,5 +1,6 @@
-import '../styles/App.css'
+import './styles/App.css'
 import React, { useState, useEffect } from "react";
+import Footer from './components/Footer';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -34,6 +35,7 @@ function App() {
           </li>
         ))}
       </ul>
+      <Footer />
     </div>
   )
 }
