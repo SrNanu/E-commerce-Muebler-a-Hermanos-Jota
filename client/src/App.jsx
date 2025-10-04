@@ -12,7 +12,6 @@ function App() {
       <main className="container py-4">
         <ProductList />
       </main>
-      <Footer />
     </div>
   );
 }

@@ -9,6 +9,9 @@ app.use(cors());
 app.use(express.json());
 app.use(logger);
 
+// Servir archivos estáticos desde la carpeta 'public'
+app.use(express.static('public'));
+
 app.use("/api/productos", productosRoutes);
 
 app.use((req, res) => {
