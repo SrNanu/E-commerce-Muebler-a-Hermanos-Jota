@@ -1,13 +1,11 @@
 import React from 'react';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onProductSelect }) => {
   if (!product) {
     return null;
   }
 
-  const { imagen, titulo, texto } = product;
-
-
+  const { id, imagen, titulo, texto } = product;
 
   return (
     <div className="col">
@@ -18,7 +16,9 @@ const ProductCard = ({ product }) => {
           <p className="card-text">{texto}</p>
         </div>
         <div className="card-footer">
-            <a href="#" className="btn btn-primary">Ver detalle</a>
+            <button onClick={() => onProductSelect(id)} className="btn btn-primary">
+              Ver detalle
+            </button>
         </div>
       </div>
     </div>
