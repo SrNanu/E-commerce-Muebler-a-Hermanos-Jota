@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navbar = ({ onNavigate }) => {
+const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -49,11 +49,18 @@ const Navbar = ({ onNavigate }) => {
           
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link position-relative" href="#/carrito" aria-label="Ver carrito">
-                
+              <a 
+                className="nav-link position-relative" 
+                href="#"
+                onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('cart'); }}
+                aria-label="Ver carrito"
+                style={{ cursor: 'pointer' }}
+              >
                 <span style={{fontSize: '1.2rem'}}>🛒</span>
-                <span className="badge bg-danger rounded-pill position-absolute" style={{top: '0px', right: '-10px'}}>0</span>
-                <span className="visually-hidden">(0) items en el carrito</span>
+                {cartItemCount > 0 && (
+                  <span className="badge bg-danger rounded-pill position-absolute" style={{top: '0px', right: '-10px'}}>{cartItemCount}</span>
+                )}
+                <span className="visually-hidden">({cartItemCount}) items en el carrito</span>
               </a>
             </li>
           </ul>

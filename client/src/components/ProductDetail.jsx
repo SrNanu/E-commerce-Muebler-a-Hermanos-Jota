@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ProductDetail = ({ productId, onBack }) => {
+const ProductDetail = ({ productId, onBack, onAddToCart }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,9 +50,25 @@ const ProductDetail = ({ productId, onBack }) => {
             </ul>
           </div>
 
-          <button className="btn mt-4" onClick={onBack} style={{ backgroundColor: 'var(--color-siena-tostado)', color: 'var(--color-alabastro-calido)' }}>
-            &larr; Volver al catálogo
-          </button>
+          <div className="d-flex gap-3 mt-4">
+            <button 
+              className="btn btn-success btn-lg" 
+              onClick={() => onAddToCart(product)}
+              style={{ 
+                backgroundColor: 'var(--color-siena-tostado)', 
+                borderColor: 'var(--color-siena-tostado)',
+                color: 'var(--color-alabastro-calido)' 
+              }}
+            >
+              🛒 Añadir al Carrito
+            </button>
+            <button 
+              className="btn btn-outline-secondary" 
+              onClick={onBack}
+            >
+              &larr; Volver al catálogo
+            </button>
+          </div>
         </div>
       </div>
     </div>

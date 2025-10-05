@@ -1,0 +1,83 @@
+# E-commerce Mueblería Hermanos Jota
+
+**Plazo de Entrega:** Finalización del Sprint 4
+
+---
+
+## Resumen del Proyecto
+
+¡Es hora de la gran transformación! En la entrega anterior, construimos una maqueta visual de "Mueblería Hermanos Jota" con HTML, CSS y JavaScript puro. Ahora, daremos un salto monumental: reconstruiremos todo el frontend desde cero usando **React** y construiremos nuestro propio **backend con Node.js y Express** para que sirva los datos de los productos.
+
+El objetivo de esta entrega es crear una verdadera aplicación de cliente-servidor. El frontend de React (cliente) ya no usará datos locales; deberá hacer peticiones a nuestra propia **API (servidor)** para obtener la información y mostrarla dinámicamente.
+
+## Objetivos de Aprendizaje
+
+Al completar este proyecto, cada estudiante deberá ser capaz de:
+
+*   Construir un servidor web y una API REST básica utilizando **Node.js y Express**.
+*   Definir y organizar rutas de API de forma modular con `express.Router`.
+*   Implementar *middlewares* personalizados para funcionalidades como el *logging*.
+*   Reconstruir una interfaz de usuario utilizando la arquitectura de componentes de **React**.
+*   Manejar el estado de los componentes y de la aplicación con el *hook* `useState`.
+*   Pasar datos entre componentes utilizando `props`.
+*   Manejar la interacción del usuario con eventos de React.
+*   Renderizar listas de datos dinámicamente con `.map()` y usar *keys* correctamente.
+*   Implementar renderizado condicional para mostrar diferentes vistas en la UI.
+*   Conectar una aplicación de React a una API de backend usando `fetch` y manejar el ciclo de vida de la petición (carga, éxito, error).
+
+## Arquitectura del Proyecto
+
+El proyecto se organizará en una estructura de **monorepo** (un solo repositorio de Git para ambos proyectos), con dos carpetas principales en la raíz:
+
+*   `/backend`: Contendrá toda la aplicación de **Node.js y Express**.
+*   `/client`: Contendrá toda la aplicación de **React** (creada con `create-react-app`).
+
+---
+
+## Requisitos del Backend (API con Express)
+
+El servidor debe cumplir con las siguientes especificaciones:
+
+1.  **Servidor Express**: Debe ser una aplicación construida con `Express.js`.
+2.  **Fuente de Datos**: Por ahora, los datos de los productos seguirán viviendo en un archivo `.js` local (un *array* de objetos), que será importado y utilizado por los controladores. No se requiere conexión a base de datos todavía.
+3.  **Endpoints de la API**: Se deben implementar las siguientes rutas:
+    *   `GET /api/productos`: Debe devolver el listado completo de productos en formato JSON.
+    *   `GET /api/productos/:id`: Debe buscar un producto por su `id` en el *array* y devolver solo los datos de ese producto en formato JSON. Si no lo encuentra, debe devolver un error **404**.
+4.  **Middleware**:
+    *   Debe incluir un *middleware* global simple que haga `console.log` de cada petición que llega al servidor (método y URL).
+    *   Debe usar el *middleware* incorporado `express.json()` para poder procesar futuras peticiones `POST`.
+5.  **Rutas y Errores**:
+    *   Las rutas de productos deben estar organizadas en su propio módulo usando `express.Router`.
+    *   Debe tener un manejador para rutas no encontradas (**404**) y un manejador de errores centralizado.
+
+---
+
+## Requisitos del Frontend (Aplicación con React)
+
+La interfaz de usuario debe ser una **Single Page Application (SPA)** reconstruida con React.
+
+1.  **Arquitectura de Componentes**: La UI debe descomponerse en componentes reutilizables (`<Navbar>`, `<Footer>`, `<ProductCard>`, `<ProductList>`, `<ProductDetail>`, `<ContactForm>`, etc.).
+2.  **Página de Catálogo**:
+    *   Al cargarse, el componente principal debe hacer una petición `fetch` al endpoint `GET /api/productos` de tu propio backend.
+    *   Debe manejar y mostrar estados de "**Cargando...**" y "**Error al cargar los productos**".
+    *   Debe renderizar la lista de productos usando el método `.map()` sobre los datos recibidos, creando un componente `<ProductCard>` por cada producto y pasándole la información vía `props`.
+3.  **Vista de Detalle de Producto**:
+    *   Dado que aún no hemos visto React Router, la vista de detalle se implementará con **renderizado condicional**.
+    *   Al hacer clic en una `<ProductCard>` en el catálogo, el estado del componente principal (`App.js`) cambiará para ocultar la lista y mostrar un componente `<ProductDetail>` con la información de ese producto específico. (Pista: pueden pasar la función para cambiar el estado a cada tarjeta).
+4.  **Carrito de Compras (Estado en React)**:
+    *   El componente `<ProductDetail>` tendrá un botón "**Añadir al Carrito**".
+    *   Al hacer clic, se debe actualizar un estado en el componente `App.js` que represente el carrito (un *array* de productos).
+    *   El componente `<Navbar>` debe recibir la cantidad de ítems en el carrito como una `prop` y mostrar el contador actualizado.
+5.  **Formulario de Contacto**:
+    *   Debe ser un componente **controlado**, donde el valor de cada *input* esté atado a una variable de estado en React (`useState`).
+    *   Al enviar el formulario, debe hacer `console.log` del objeto de estado que contiene los datos del formulario y mostrar un mensaje de éxito en la UI.
+
+---
+
+## Entregables
+
+1.  El enlace al repositorio de **GitHub** que contenga las carpetas `/client` y `/backend`. El historial de *commits* debe reflejar la participación de todos los integrantes.
+2.  Un archivo `README.md` detallado que incluya:
+    *   Nombre del proyecto y de los integrantes.
+    *   Instrucciones claras sobre cómo instalar las dependencias y correr el proyecto (comandos para instalar en ambas carpetas y para iniciar ambos servidores).
+    *   Una breve descripción de la arquitectura y las decisiones tomadas.
