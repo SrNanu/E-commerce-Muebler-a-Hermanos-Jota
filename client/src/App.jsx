@@ -19,10 +19,10 @@ function App() {
   };
 
   const handleNavigate = (nextView) => {
-    // Normalizamos Home y Productos a la vista de productos
+
     const normalized = nextView === 'home' ? 'products' : nextView;
     setView(normalized);
-    // Al cambiar de vista, si no estamos en productos, limpiar selección
+
     if (normalized !== 'products') {
       setSelectedProductId(null);
     }
