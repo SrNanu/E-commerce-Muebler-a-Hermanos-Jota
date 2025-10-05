@@ -23,17 +23,17 @@ const Home = ({ onProductSelect, onNavigate }) => {
 
   const carouselImages = [
     {
-      url: 'http://localhost:4000/img/productos/Aparador Uspallata.png',
+      url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=80',
       title: 'Muebles de Calidad',
       subtitle: 'Diseños exclusivos para tu hogar'
     },
     {
-      url: 'http://localhost:4000/img/productos/Mesa Comedor Pampa.png',
+      url: 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=1920&q=80',
       title: 'Estilo y Confort',
       subtitle: 'Cada pieza cuenta una historia'
     },
     {
-      url: 'http://localhost:4000/img/productos/Sillón Copacabana.png',
+      url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=80',
       title: 'Elegancia Atemporal',
       subtitle: 'Muebles que perduran en el tiempo'
     }
@@ -274,8 +274,8 @@ const Home = ({ onProductSelect, onNavigate }) => {
             </div>
             <div className="col-md-6">
               <img 
-                src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=600&q=80"
-                alt="Showroom"
+                src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80"
+                alt="Showroom Mueblería"
                 className="img-fluid rounded shadow"
               />
             </div>
