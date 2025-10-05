@@ -38,6 +38,18 @@ const ProductDetail = ({ productId, onBack, onAddToCart }) => {
           <h1 className="titulo-principal">{product.titulo}</h1>
           <p className="texto lead" style={{ color: 'var(--color-siena-tostado)' }}>{product.texto}</p>
           
+          {product.precio && (
+            <div className="my-4">
+              <h3 className="fw-bold" style={{ color: '#D4A437' }}>
+                ${product.precio.toLocaleString('es-AR')}
+              </h3>
+              <p className="text-muted small mb-0">
+                <i className="bi bi-credit-card me-1"></i>
+                Precio en efectivo o débito
+              </p>
+            </div>
+          )}
+          
           <div className="mt-4">
             <h4 className="titulo-editorial" style={{color: 'var(--color-siena-tostado)'}}>Detalles</h4>
             <ul className="list-group list-group-flush">
