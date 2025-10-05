@@ -15,6 +15,7 @@ function App() {
 
   const handleProductSelect = (id) => {
     setSelectedProductId(id);
+    setView('products');
   };
 
   const handleBackToList = () => {

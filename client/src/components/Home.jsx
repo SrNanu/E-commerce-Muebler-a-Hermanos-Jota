@@ -116,7 +116,6 @@ const Home = ({ onProductSelect, onNavigate }) => {
         </button>
       </div>
 
-      {/* Sección de Características */}
       <div className="container mb-5">
         <div className="row g-4 text-center">
           <div className="col-md-4">
@@ -143,7 +142,6 @@ const Home = ({ onProductSelect, onNavigate }) => {
         </div>
       </div>
 
-      {/* Productos Destacados */}
       <div className="container mb-5">
         <div className="text-center mb-5">
           <h2 className="display-5 fw-bold mb-3" style={{ color: '#8B4513' }}>
@@ -241,7 +239,6 @@ const Home = ({ onProductSelect, onNavigate }) => {
         </div>
       </div>
 
-      {/* Sección "Sobre Nosotros" */}
       <div className="py-5" style={{ backgroundColor: '#f8f9fa' }}>
         <div className="container">
           <div className="row align-items-center">
