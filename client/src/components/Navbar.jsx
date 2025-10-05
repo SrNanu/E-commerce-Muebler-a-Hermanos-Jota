@@ -2,69 +2,163 @@ import React from 'react';
 
 const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{
+      background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+      borderBottom: '3px solid #D4A437'
+    }}>
+      <div className="container">
         <a
-          className="navbar-brand"
+          className="navbar-brand d-flex align-items-center fw-bold"
           href="#"
           onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}
+          style={{ 
+            fontSize: '1.5rem',
+            letterSpacing: '1px',
+            cursor: 'pointer'
+          }}
         >
-          Mueblería Jota
+          <span className="me-2" style={{ fontSize: '2rem' }}>🪑</span>
+          <span className="d-none d-md-inline">Mueblería Jota</span>
+          <span className="d-inline d-md-none">M. Jota</span>
         </a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        
+        <button 
+          className="navbar-toggler border-0" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+          style={{ boxShadow: 'none' }}
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
+        
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav mx-auto">
             <li className="nav-item">
               <a
-                className="nav-link active"
-                aria-current="page"
+                className="nav-link px-3 py-2 rounded-3 fw-semibold"
                 href="#"
-                onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  onNavigate && onNavigate('products'); 
+                }}
+                style={{ 
+                  transition: 'all 0.3s ease',
+                  color: 'rgba(255, 255, 255, 0.9)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                }}
               >
-                Home
+                <i className="bi bi-house-door me-1"></i>
+                Inicio
               </a>
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className="nav-link px-3 py-2 rounded-3 fw-semibold"
                 href="#"
-                onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  onNavigate && onNavigate('products'); 
+                }}
+                style={{ 
+                  transition: 'all 0.3s ease',
+                  color: 'rgba(255, 255, 255, 0.9)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                }}
               >
-                Productos
+                <i className="bi bi-grid me-1"></i>
+                Catálogo
               </a>
             </li>
             <li className="nav-item">
               <a
-                className="nav-link"
+                className="nav-link px-3 py-2 rounded-3 fw-semibold"
                 href="#"
-                onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('contact'); }}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  onNavigate && onNavigate('contact'); 
+                }}
+                style={{ 
+                  transition: 'all 0.3s ease',
+                  color: 'rgba(255, 255, 255, 0.9)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                }}
               >
+                <i className="bi bi-envelope me-1"></i>
                 Contacto
               </a>
             </li>
           </ul>
 
-          
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a 
-                className="nav-link position-relative" 
-                href="#"
-                onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('cart'); }}
+              <button 
+                className="btn position-relative px-3 py-2 rounded-3"
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  onNavigate && onNavigate('cart'); 
+                }}
                 aria-label="Ver carrito"
-                style={{ cursor: 'pointer' }}
+                style={{
+                  backgroundColor: '#D4A437',
+                  border: 'none',
+                  color: '#fff',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#E5B547';
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#D4A437';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                }}
               >
-                <span style={{fontSize: '1.2rem'}}>🛒</span>
+                <i className="bi bi-cart3" style={{ fontSize: '1.2rem' }}></i>
+                <span className="ms-2 d-none d-lg-inline">Carrito</span>
                 {cartItemCount > 0 && (
-                  <span className="badge bg-danger rounded-pill position-absolute" style={{top: '0px', right: '-10px'}}>{cartItemCount}</span>
+                  <span 
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    style={{
+                      fontSize: '0.7rem',
+                      padding: '0.25rem 0.5rem'
+                    }}
+                  >
+                    {cartItemCount}
+                    <span className="visually-hidden">productos en el carrito</span>
+                  </span>
                 )}
-                <span className="visually-hidden">({cartItemCount}) items en el carrito</span>
-              </a>
+              </button>
             </li>
           </ul>
-
         </div>
       </div>
     </nav>
