@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-// Tomado de referencia contacto.html: IDs y estructura
-// inputName, inputEmail, inputMessage, confirmButton y form id=contactForm
 const initialForm = { name: "", email: "", message: "" };
 
 const ContactForm = () => {
@@ -10,7 +8,7 @@ const ContactForm = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    // Mapear por id del elemento para conservar los mismos IDs del HTML
+
     const keyMap = {
       inputName: "name",
       inputEmail: "email",
