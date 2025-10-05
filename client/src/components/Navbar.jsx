@@ -43,7 +43,7 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
                 href="#"
                 onClick={(e) => { 
                   e.preventDefault(); 
-                  onNavigate && onNavigate('products'); 
+                  onNavigate && onNavigate('home'); 
                 }}
                 style={{ 
                   transition: 'all 0.3s ease',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Home from './components/Home';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
@@ -9,7 +10,7 @@ import './styles/App.css';
 
 function App() {
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [view, setView] = useState('products');
+  const [view, setView] = useState('home');
   const [carrito, setCarrito] = useState([]);
 
   const handleProductSelect = (id) => {
@@ -21,11 +22,9 @@ function App() {
   };
 
   const handleNavigate = (nextView) => {
-
-    const normalized = nextView === 'home' ? 'products' : nextView;
-    setView(normalized);
-
-    if (normalized !== 'products') {
+    setView(nextView);
+    
+    if (nextView !== 'products') {
       setSelectedProductId(null);
     }
   };
@@ -68,25 +67,40 @@ function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar onNavigate={handleNavigate} cartItemCount={carrito.length} />
-      <main className="container py-4">
-        {view === 'cart' ? (
-          <Cart 
-            carrito={carrito}
-            onRemoveFromCart={handleRemoveFromCart}
-            onUpdateQuantity={handleUpdateQuantity}
-            onBack={() => handleNavigate('products')}
+      <main className="py-0">
+        {view === 'home' ? (
+          <Home 
+            onProductSelect={handleProductSelect}
+            onNavigate={handleNavigate}
           />
+        ) : view === 'cart' ? (
+          <div className="container py-4">
+            <Cart 
+              carrito={carrito}
+              onRemoveFromCart={handleRemoveFromCart}
+              onUpdateQuantity={handleUpdateQuantity}
+              onBack={() => handleNavigate('home')}
+            />
+          </div>
         ) : view === 'contact' ? (
-          <ContactForm />
-        ) : selectedProductId ? (
-          <ProductDetail 
-            productId={selectedProductId} 
-            onBack={handleBackToList} 
-            onAddToCart={handleAddToCart}
-          />
-        ) : (
-          <ProductList onProductSelect={handleProductSelect} />
-        )}
+          <div className="container py-4">
+            <ContactForm />
+          </div>
+        ) : view === 'products' ? (
+          selectedProductId ? (
+            <div className="container py-4">
+              <ProductDetail 
+                productId={selectedProductId} 
+                onBack={handleBackToList} 
+                onAddToCart={handleAddToCart}
+              />
+            </div>
+          ) : (
+            <div className="container py-4">
+              <ProductList onProductSelect={handleProductSelect} />
+            </div>
+          )
+        ) : null}
       </main>
       <Footer />
     </div>
