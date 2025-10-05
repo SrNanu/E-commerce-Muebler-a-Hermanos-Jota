@@ -15,7 +15,7 @@ const Navbar = ({ onNavigate }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <a
                 className="nav-link active"
@@ -45,6 +45,19 @@ const Navbar = ({ onNavigate }) => {
               </a>
             </li>
           </ul>
+
+          
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link position-relative" href="#/carrito" aria-label="Ver carrito">
+                
+                <span style={{fontSize: '1.2rem'}}>🛒</span>
+                <span className="badge bg-danger rounded-pill position-absolute" style={{top: '0px', right: '-10px'}}>0</span>
+                <span className="visually-hidden">(0) items en el carrito</span>
+              </a>
+            </li>
+          </ul>
+
         </div>
       </div>
     </nav>
