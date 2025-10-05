@@ -41,7 +41,6 @@ const Home = ({ onProductSelect, onNavigate }) => {
 
   return (
     <div>
-      {/* Carrusel Hero */}
       <div id="heroCarousel" className="carousel slide mb-5" data-bs-ride="carousel">
         <div className="carousel-indicators">
           {carouselImages.map((_, index) => (
