@@ -231,3 +231,20 @@ button:hover, .btn:hover, .cta:hover {
     color: var(--color-alabastro-calido);
     padding: 2rem;
 }
+
+/* Buscador: armonizar input y botón */
+.search-input {
+    border-color: var(--color-siena-tostado) !important;
+    border-radius: 8px;
+}
+
+.search-input:focus {
+    border-color: var(--color-vara-de-oro) !important;
+    box-shadow: 0 0 0 0.2rem rgba(212, 164, 55, 0.25);
+}
+
+.search-button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 8px;
+}
