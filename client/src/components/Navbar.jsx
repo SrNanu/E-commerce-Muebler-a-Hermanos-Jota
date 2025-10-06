@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../assets/logo.svg';
 
 const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
   return (
@@ -10,14 +11,22 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
         <a
           className="navbar-brand d-flex align-items-center fw-bold"
           href="#"
-          onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}
+          onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('home'); }}
           style={{ 
             fontSize: '1.5rem',
             letterSpacing: '1px',
             cursor: 'pointer'
           }}
         >
-          <span className="me-2" style={{ fontSize: '2rem' }}>🪑</span>
+          <img 
+            src={logo} 
+            alt="Mueblería Jota Logo" 
+            style={{ 
+              height: '40px', 
+              width: 'auto',
+              marginRight: '12px',
+            }} 
+          />
           <span className="d-none d-md-inline">Mueblería Jota</span>
           <span className="d-inline d-md-none">M. Jota</span>
         </a>
