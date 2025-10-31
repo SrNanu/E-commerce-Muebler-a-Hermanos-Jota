@@ -32,8 +32,8 @@ const ProductList = () => {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredProducts = normalizedQuery
     ? products.filter(p => {
-        const title = (p.titulo || "").toLowerCase();
-        const text = (p.texto || "").toLowerCase();
+        const title = (p.nombre || p.titulo || "").toLowerCase();
+        const text = (p.descripcion || p.texto || "").toLowerCase();
         return title.includes(normalizedQuery) || text.includes(normalizedQuery);
       })
     : products;
@@ -76,10 +76,7 @@ const ProductList = () => {
       ) : (
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {filteredProducts.map(product => (
-
-            <ProductCard key={product._id} product={product} />
-
-
+            <ProductCard key={product._id || product.legacyId || Math.random()} product={product} />
           ))}
         </div>
       )}
