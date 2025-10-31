@@ -1,21 +1,22 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 
-const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
+const Navbar = ({ cartItemCount = 0 }) => {
+  const navigate = useNavigate();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{
       background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
       borderBottom: '3px solid #D4A437'
     }}>
       <div className="container">
-        <a
+        <Link
           className="navbar-brand d-flex align-items-center fw-bold"
-          href="#"
-          onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('home'); }}
+          to="/"
           style={{ 
             fontSize: '1.5rem',
             letterSpacing: '1px',
-            cursor: 'pointer'
+            textDecoration: 'none'
           }}
         >
           <img 
@@ -29,7 +30,7 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
           />
           <span className="d-none d-md-inline">Mueblería Jota</span>
           <span className="d-inline d-md-none">M. Jota</span>
-        </a>
+        </Link>
         
         <button 
           className="navbar-toggler border-0" 
@@ -47,13 +48,9 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
-              <a
+              <Link
                 className="nav-link px-3 py-2 rounded-3 fw-semibold"
-                href="#"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  onNavigate && onNavigate('home'); 
-                }}
+                to="/"
                 style={{ 
                   transition: 'all 0.3s ease',
                   color: 'rgba(255, 255, 255, 0.9)'
@@ -69,16 +66,12 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
               >
                 <i className="bi bi-house-door me-1"></i>
                 Inicio
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className="nav-link px-3 py-2 rounded-3 fw-semibold"
-                href="#"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  onNavigate && onNavigate('products'); 
-                }}
+                to="/productos"
                 style={{ 
                   transition: 'all 0.3s ease',
                   color: 'rgba(255, 255, 255, 0.9)'
@@ -94,16 +87,12 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
               >
                 <i className="bi bi-grid me-1"></i>
                 Catálogo
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className="nav-link px-3 py-2 rounded-3 fw-semibold"
-                href="#"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  onNavigate && onNavigate('contact'); 
-                }}
+                to="/contacto"
                 style={{ 
                   transition: 'all 0.3s ease',
                   color: 'rgba(255, 255, 255, 0.9)'
@@ -119,7 +108,7 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
               >
                 <i className="bi bi-envelope me-1"></i>
                 Contacto
-              </a>
+              </Link>
             </li>
           </ul>
 
@@ -127,10 +116,7 @@ const Navbar = ({ onNavigate, cartItemCount = 0 }) => {
             <li className="nav-item">
               <button 
                 className="btn position-relative px-3 py-2 rounded-3"
-                onClick={(e) => { 
-                  e.preventDefault(); 
-                  onNavigate && onNavigate('cart'); 
-                }}
+                onClick={() => navigate('/carrito')}
                 aria-label="Ver carrito"
                 style={{
                   backgroundColor: '#D4A437',

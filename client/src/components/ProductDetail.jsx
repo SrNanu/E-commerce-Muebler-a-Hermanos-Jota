@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
-const ProductDetail = ({ productId, onBack, onAddToCart }) => {
+const ProductDetail = ({ onAddToCart }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:4000/api/productos/${productId}`, { headers: { "Authorization": "muebles123" } })
+    fetch(`http://localhost:4000/api/productos/${id}`, { headers: { "Authorization": "muebles123" } })
       .then(res => {
         if (!res.ok) {
           throw new Error('Producto no encontrado');
@@ -22,7 +25,7 @@ const ProductDetail = ({ productId, onBack, onAddToCart }) => {
         setError(err.message);
         setLoading(false);
       });
-  }, [productId]);
+  }, [id]);
 
   if (loading) return <div className="text-center"><p>Cargando producto...</p></div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
@@ -76,10 +79,11 @@ const ProductDetail = ({ productId, onBack, onAddToCart }) => {
             </button>
             <button 
               className="btn btn-outline-secondary" 
-              onClick={onBack}
+              onClick={() => navigate(-1)}
             >
-              &larr; Volver al catálogo
+              &larr; Volver
             </button>
+            <Link to="/productos" className="btn btn-link">Ir al catálogo</Link>
           </div>
         </div>
       </div>

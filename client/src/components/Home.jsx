@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Home = ({ onProductSelect, onNavigate }) => {
+const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:4000/api/productos', { 
@@ -78,7 +80,7 @@ const Home = ({ onProductSelect, onNavigate }) => {
                   <div>
                     <button 
                       className="btn btn-lg px-5 py-3 fw-bold"
-                      onClick={() => onNavigate('products')}
+                      onClick={() => navigate('/productos')}
                       style={{
                         backgroundColor: '#D4A437',
                         color: '#fff',
@@ -165,7 +167,7 @@ const Home = ({ onProductSelect, onNavigate }) => {
                     transition: 'transform 0.3s, box-shadow 0.3s',
                     cursor: 'pointer'
                   }}
-                  onClick={() => onProductSelect(product.id)}
+                  onClick={() => navigate(`/productos/${product.id}`)}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-10px)';
                     e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
@@ -215,7 +217,7 @@ const Home = ({ onProductSelect, onNavigate }) => {
         <div className="text-center mt-5">
           <button 
             className="btn btn-lg px-5 py-3"
-            onClick={() => onNavigate('products')}
+            onClick={() => navigate('/productos')}
             style={{
               backgroundColor: '#8B4513',
               color: 'white',

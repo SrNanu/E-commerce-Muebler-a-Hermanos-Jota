@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 
-const ProductList = ({ onProductSelect }) => {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -76,7 +76,7 @@ const ProductList = ({ onProductSelect }) => {
       ) : (
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} onProductSelect={onProductSelect} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}
