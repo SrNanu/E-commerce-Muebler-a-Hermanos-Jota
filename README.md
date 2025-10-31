@@ -86,7 +86,7 @@ Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa fic
 ### Backend (Express)
 - `src/app.js`: configuración de middlewares (`cors`, `express.json`, `logger`), rutas y manejadores de 404 y errores.
 - `src/routes/productos.routes.js`: rutas `GET /api/productos` y `GET /api/productos/:id`.
-- `src/data/productos.js`: fuente de datos local (array de objetos).
+- Datos en MongoDB Atlas: base `muebleria_hermanos_jota`, colección `products` (modelo `Product`).
 - `src/middlewares/logger.js`: logging de método y URL.
 - `src/server.js`: arranque del servidor (puerto 4000).
 
