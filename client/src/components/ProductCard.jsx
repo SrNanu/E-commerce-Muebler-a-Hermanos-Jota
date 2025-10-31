@@ -6,7 +6,13 @@ const ProductCard = ({ product }) => {
     return null;
   }
 
-  const { id, imagen, titulo, descripcion, precio } = product;
+  // Alinear con backend: usar _id o legacyId, y mapear campos visuales
+  const id = product._id || product.legacyId || product.id;
+  const imagenPath = product.imagenUrl || product.imagen || '';
+  const imagen = imagenPath.startsWith('http') ? imagenPath : `http://localhost:4000/${imagenPath}`;
+  const titulo = product.nombre || product.titulo;
+  const texto = product.descripcion || product.texto || '';
+  const precio = product.precio;
 
   return (
     <div className="col">
@@ -14,14 +20,14 @@ const ProductCard = ({ product }) => {
         onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
         onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
         <Link to={`/productos/${id}`} style={{ textDecoration: 'none' }}>
-          <img src={`http://localhost:4000/${imagen}`} className="card-img-top" alt={titulo} style={{ height: '200px', objectFit: 'cover' }} />
+          <img src={imagen} className="card-img-top" alt={titulo} style={{ height: '200px', objectFit: 'cover' }} />
         </Link>
         <div className="card-body d-flex flex-column">
 
           <Link to={`/productos/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <h5 className="card-title">{titulo}</h5>
           </Link>
-          <p className="card-text text-muted small flex-grow-1">{descripcion.substring(0, 100)}...</p>
+          <p className="card-text text-muted small flex-grow-1">{texto.substring(0, 100)}...</p>
 
           {precio && (
             <div className="mt-auto pt-2">

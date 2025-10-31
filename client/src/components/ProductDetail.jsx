@@ -35,11 +35,18 @@ const ProductDetail = ({ onAddToCart }) => {
     <div className="container my-5">
       <div className="row">
         <div className="col-md-6 mb-4 mb-md-0">
-          <img src={`http://localhost:4000/${product.imagen}`} className="img-fluid rounded shadow-sm" alt={product.titulo} />
+          {(() => {
+            const imagePath = product.imagenUrl || product.imagen || '';
+            const imageSrc = imagePath.startsWith('http') ? imagePath : `http://localhost:4000/${imagePath}`;
+            const altText = product.nombre || product.titulo || 'Producto';
+            return (
+              <img src={imageSrc} className="img-fluid rounded shadow-sm" alt={altText} />
+            );
+          })()}
         </div>
         <div className="col-md-6">
-          <h1 className="titulo-principal">{product.titulo}</h1>
-          <p className="texto lead" style={{ color: 'var(--color-siena-tostado)' }}>{product.texto}</p>
+          <h1 className="titulo-principal">{product.nombre || product.titulo}</h1>
+          <p className="texto lead" style={{ color: 'var(--color-siena-tostado)' }}>{product.descripcion || product.texto}</p>
           
           {product.precio && (
             <div className="my-4">
@@ -56,7 +63,7 @@ const ProductDetail = ({ onAddToCart }) => {
           <div className="mt-4">
             <h4 className="titulo-editorial" style={{color: 'var(--color-siena-tostado)'}}>Detalles</h4>
             <ul className="list-group list-group-flush">
-              {product.atributos.map((attr, index) => (
+              {(product.atributos || []).map((attr, index) => (
                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center px-0" style={{ backgroundColor: 'transparent', color: 'var(--color-siena-tostado)' }}>
                   <strong>{attr.nombre}:</strong>
                   <span>{attr.valor}</span>
