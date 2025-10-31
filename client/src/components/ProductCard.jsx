@@ -1,18 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getProductId, getProductImageSrc, getProductTitle, getProductText, getProductPrice } from '../utils/productView';
 
 const ProductCard = ({ product }) => {
   if (!product) {
     return null;
   }
 
-  // Alinear con backend: usar _id o legacyId, y mapear campos visuales
-  const id = product._id || product.legacyId || product.id;
-  const imagenPath = product.imagenUrl || product.imagen || '';
-  const imagen = imagenPath.startsWith('http') ? imagenPath : `http://localhost:4000/${imagenPath}`;
-  const titulo = product.nombre || product.titulo;
-  const texto = product.descripcion || product.texto || '';
-  const precio = product.precio;
+  const id = getProductId(product);
+  const imagen = getProductImageSrc(product);
+  const titulo = getProductTitle(product);
+  const texto = getProductText(product);
+  const precio = getProductPrice(product);
 
   return (
     <div className="col">

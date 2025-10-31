@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { getProductImageSrc, getProductTitle, getProductText } from '../utils/productView';
 
 const ProductDetail = ({ onAddToCart }) => {
   const [product, setProduct] = useState(null);
@@ -35,18 +36,11 @@ const ProductDetail = ({ onAddToCart }) => {
     <div className="container my-5">
       <div className="row">
         <div className="col-md-6 mb-4 mb-md-0">
-          {(() => {
-            const imagePath = product.imagenUrl || product.imagen || '';
-            const imageSrc = imagePath.startsWith('http') ? imagePath : `http://localhost:4000/${imagePath}`;
-            const altText = product.nombre || product.titulo || 'Producto';
-            return (
-              <img src={imageSrc} className="img-fluid rounded shadow-sm" alt={altText} />
-            );
-          })()}
+          <img src={getProductImageSrc(product)} className="img-fluid rounded shadow-sm" alt={getProductTitle(product)} />
         </div>
         <div className="col-md-6">
-          <h1 className="titulo-principal">{product.nombre || product.titulo}</h1>
-          <p className="texto lead" style={{ color: 'var(--color-siena-tostado)' }}>{product.descripcion || product.texto}</p>
+          <h1 className="titulo-principal">{getProductTitle(product)}</h1>
+          <p className="texto lead" style={{ color: 'var(--color-siena-tostado)' }}>{getProductText(product)}</p>
           
           {product.precio && (
             <div className="my-4">

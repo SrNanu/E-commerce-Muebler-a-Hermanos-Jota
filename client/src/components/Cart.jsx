@@ -1,4 +1,5 @@
 import React from 'react';
+import { getProductImageSrc, getProductTitle, getProductText } from '../utils/productView';
 
 const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
   const calcularTotal = () => {
@@ -73,16 +74,22 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                   {carrito.map((item) => (
                     <div key={item.id} className="row align-items-center mb-3 pb-3 border-bottom">
                       <div className="col-md-2 col-3">
-                        <img 
-                          src={`http://localhost:4000/${item.imagen}`} 
-                          alt={item.titulo}
-                          className="img-fluid rounded"
-                          style={{ maxHeight: '80px', objectFit: 'cover' }}
-                        />
+                        {(() => {
+                          const src = getProductImageSrc(item);
+                          const alt = getProductTitle(item);
+                          return (
+                            <img 
+                              src={src} 
+                              alt={alt}
+                              className="img-fluid rounded"
+                              style={{ maxHeight: '80px', objectFit: 'cover' }}
+                            />
+                          );
+                        })()}
                       </div>
                       <div className="col-md-4 col-9">
-                        <h5 className="mb-1">{item.titulo}</h5>
-                        <p className="text-muted mb-0 small">{item.texto}</p>
+                        <h5 className="mb-1">{getProductTitle(item)}</h5>
+                        <p className="text-muted mb-0 small">{getProductText(item)}</p>
                       </div>
                       <div className="col-md-2 col-4 text-center">
                         <div className="input-group input-group-sm">

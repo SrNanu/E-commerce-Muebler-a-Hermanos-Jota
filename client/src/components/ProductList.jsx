@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import { getProductTitle, getProductText, getProductId } from '../utils/productView';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -32,8 +33,8 @@ const ProductList = () => {
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredProducts = normalizedQuery
     ? products.filter(p => {
-        const title = (p.nombre || p.titulo || "").toLowerCase();
-        const text = (p.descripcion || p.texto || "").toLowerCase();
+        const title = getProductTitle(p).toLowerCase();
+        const text = getProductText(p).toLowerCase();
         return title.includes(normalizedQuery) || text.includes(normalizedQuery);
       })
     : products;
@@ -76,7 +77,7 @@ const ProductList = () => {
       ) : (
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {filteredProducts.map(product => (
-            <ProductCard key={product._id || product.legacyId || Math.random()} product={product} />
+            <ProductCard key={getProductId(product) || Math.random()} product={product} />
           ))}
         </div>
       )}
