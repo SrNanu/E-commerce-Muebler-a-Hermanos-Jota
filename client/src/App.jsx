@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
@@ -6,29 +7,12 @@ import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
 import Cart from './components/Cart';
+import AdminCreateProduct from './components/AdminCreateProduct';
 import './styles/App.css';
 
 function App() {
-  const [selectedProductId, setSelectedProductId] = useState(null);
-  const [view, setView] = useState('home');
+  const navigate = useNavigate();
   const [carrito, setCarrito] = useState([]);
-
-  const handleProductSelect = (id) => {
-    setSelectedProductId(id);
-    setView('products');
-  };
-
-  const handleBackToList = () => {
-    setSelectedProductId(null);
-  };
-
-  const handleNavigate = (nextView) => {
-    setView(nextView);
-    
-    if (nextView !== 'products') {
-      setSelectedProductId(null);
-    }
-  };
 
   const handleAddToCart = (product) => {
     // Verificar si el producto ya está en el carrito
@@ -62,41 +46,60 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Navbar onNavigate={handleNavigate} cartItemCount={carrito.length} />
+      <Navbar cartItemCount={carrito.length} />
       <main className="py-0">
-        {view === 'home' ? (
-          <Home 
-            onProductSelect={handleProductSelect}
-            onNavigate={handleNavigate}
+        <Routes>
+          <Route
+            path="/"
+            element={<Home />}
           />
-        ) : view === 'cart' ? (
-          <div className="container py-4">
-            <Cart 
-              carrito={carrito}
-              onRemoveFromCart={handleRemoveFromCart}
-              onUpdateQuantity={handleUpdateQuantity}
-              onBack={() => handleNavigate('home')}
-            />
-          </div>
-        ) : view === 'contact' ? (
-          <div className="container py-4">
-            <ContactForm />
-          </div>
-        ) : view === 'products' ? (
-          selectedProductId ? (
-            <div className="container py-4">
-              <ProductDetail 
-                productId={selectedProductId} 
-                onBack={handleBackToList} 
-                onAddToCart={handleAddToCart}
-              />
-            </div>
-          ) : (
-            <div className="container py-4">
-              <ProductList onProductSelect={handleProductSelect} />
-            </div>
-          )
-        ) : null}
+          <Route
+            path="/productos"
+            element={
+              <div className="container py-4">
+                <ProductList />
+              </div>
+            }
+          />
+          <Route
+            path="/productos/:id"
+            element={
+              <div className="container py-4">
+                <ProductDetail onAddToCart={handleAddToCart} />
+              </div>
+            }
+          />
+          <Route
+            path="/contacto"
+            element={
+              <div className="container py-4">
+                <ContactForm />
+              </div>
+            }
+          />
+          <Route
+            path="/admin/crear-producto"
+            element={
+              <div className="container py-4">
+                <AdminCreateProduct />
+              </div>
+            }
+          />
+          {/* Ruta opcional para el carrito para no romper UX existente */}
+          <Route
+            path="/carrito"
+            element={
+              <div className="container py-4">
+                <Cart 
+                  carrito={carrito}
+                  onRemoveFromCart={handleRemoveFromCart}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  onBack={() => navigate('/productos')}
+                />
+              </div>
+            }
+          />
+        </Routes>
       </main>
       <Footer />
     </div>
