@@ -33,4 +33,14 @@ const getProductById = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, getProductById };
+const createProduct = async (req, res) => {
+  try {
+    const newProduct = new Product(req.body)
+    const savedProduct = await newProduct.save()
+    res.status(201).json(savedProduct)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct }
