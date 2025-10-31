@@ -77,7 +77,7 @@ const ProductList = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {filteredProducts.map(product => (
 
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id} product={product} />
 
 
           ))}

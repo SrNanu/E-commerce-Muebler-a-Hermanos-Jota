@@ -21,7 +21,7 @@ const ProductCard = ({ product }) => {
           <Link to={`/productos/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <h5 className="card-title">{titulo}</h5>
           </Link>
-          <p className="card-text text-muted small flex-grow-1">{texto.substring(0, 100)}...</p>
+          <p className="card-text text-muted small flex-grow-1">{descripcion.substring(0, 100)}...</p>
 
           {precio && (
             <div className="mt-auto pt-2">
