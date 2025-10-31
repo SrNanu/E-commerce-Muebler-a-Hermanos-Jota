@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
     return null;
   }
 
-  const { id, imagen, titulo, texto, precio } = product;
+  const { id, imagen, titulo, descripcion, precio } = product;
 
   return (
     <div className="col">
@@ -17,10 +17,12 @@ const ProductCard = ({ product }) => {
           <img src={`http://localhost:4000/${imagen}`} className="card-img-top" alt={titulo} style={{ height: '200px', objectFit: 'cover' }} />
         </Link>
         <div className="card-body d-flex flex-column">
+
           <Link to={`/productos/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <h5 className="card-title">{titulo}</h5>
           </Link>
           <p className="card-text text-muted small flex-grow-1">{texto.substring(0, 100)}...</p>
+
           {precio && (
             <div className="mt-auto pt-2">
               <h4 className="mb-0 fw-bold" style={{ color: '#D4A437' }}>

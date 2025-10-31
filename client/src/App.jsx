@@ -29,14 +29,10 @@ function App() {
       // Si no existe, agregarlo con cantidad 1
       setCarrito([...carrito, { ...product, cantidad: 1 }]);
     }
-    
-    console.log('Producto agregado al carrito:', product);
-    console.log('Carrito actualizado:', [...carrito, product]);
   };
 
   const handleRemoveFromCart = (productId) => {
     setCarrito(carrito.filter(item => item.id !== productId));
-    console.log('Producto eliminado del carrito, ID:', productId);
   };
 
   const handleUpdateQuantity = (productId, newQuantity) => {
@@ -46,7 +42,6 @@ function App() {
         ? { ...item, cantidad: newQuantity }
         : item
     ));
-    console.log('Cantidad actualizada para producto ID:', productId, 'Nueva cantidad:', newQuantity);
   };
 
   return (
