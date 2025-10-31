@@ -46,14 +46,27 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true }).lean();
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true }).lean()
     if (!updatedProduct) {
-      return res.status(404).json({ error: "Producto no encontrado" });
+      return res.status(404).json({ error: "Producto no encontrado" })
     }
-    res.json(updatedProduct);
+    res.json(updatedProduct)
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
+}
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct }
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id).lean()
+    if (!deletedProduct) {
+      return res.status(404).json({ error: "Producto no encontrado" })
+    }
+    res.json({ message: "Producto eliminado" })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct }
