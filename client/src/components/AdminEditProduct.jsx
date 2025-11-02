@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createProduct } from '../utils/productApi';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getProductById, updateProduct } from '../utils/productApi';
 
-const AdminCreateProduct = () => {
+const AdminEditProduct = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  
   const [form, setForm] = useState({
     nombre: '',
     descripcion: '',
@@ -12,9 +14,39 @@ const AdminCreateProduct = () => {
     categoria: '',
     imagenUrl: ''
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  // Cargar producto al montar el componente
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const product = await getProductById(id);
+        
+        setForm({
+          nombre: product.nombre || '',
+          descripcion: product.descripcion || '',
+          precio: product.precio || '',
+          stock: product.stock || '',
+          categoria: product.categoria || '',
+          imagenUrl: product.imagenUrl || ''
+        });
+      } catch (err) {
+        console.error('Error loading product:', err);
+        setError(err.message || 'Error al cargar el producto');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +55,7 @@ const AdminCreateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     setError(null);
     setSuccess(false);
 
@@ -48,36 +80,46 @@ const AdminCreateProduct = () => {
         imagenUrl: form.imagenUrl.trim()
       };
 
-      const data = await createProduct(productData);
+      const data = await updateProduct(id, productData);
       
       setSuccess(true);
-      console.log('Producto creado:', data);
-      
-      // Limpiar formulario
-      setForm({
-        nombre: '',
-        descripcion: '',
-        precio: '',
-        stock: '',
-        categoria: '',
-        imagenUrl: ''
-      });
+      console.log('Producto actualizado:', data);
 
-      // Mostrar mensaje de éxito y redirigir
+      // Redirigir tras 1.5 segundos
       setTimeout(() => {
         navigate('/admin/productos');
       }, 1500);
     } catch (err) {
       console.error('Error:', err);
-      setError(err.message || 'Error al crear el producto');
+      setError(err.message || 'Error al actualizar el producto');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="text-center py-5">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+        <p className="mt-2">Cargando producto...</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h2 className="mb-4">Crear Nuevo Producto</h2>
+      <div className="d-flex align-items-center mb-4">
+        <button 
+          className="btn btn-link text-dark p-0 me-2"
+          onClick={() => navigate('/admin/productos')}
+          title="Volver"
+        >
+          ← 
+        </button>
+        <h2 className="mb-0">Editar Producto</h2>
+      </div>
       
       {error && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -88,7 +130,7 @@ const AdminCreateProduct = () => {
 
       {success && (
         <div className="alert alert-success alert-dismissible fade show" role="alert">
-          ✓ Producto creado exitosamente. Redirigiendo...
+          ✓ Producto actualizado exitosamente. Redirigiendo...
           <button type="button" className="btn-close" onClick={() => setSuccess(false)}></button>
         </div>
       )}
@@ -105,7 +147,7 @@ const AdminCreateProduct = () => {
                 placeholder="Ej: Silla de madera"
                 value={form.nombre}
                 onChange={handleChange}
-                disabled={loading}
+                disabled={saving}
                 required
               />
             </div>
@@ -119,7 +161,7 @@ const AdminCreateProduct = () => {
                 placeholder="Descripción detallada del producto..."
                 value={form.descripcion}
                 onChange={handleChange}
-                disabled={loading}
+                disabled={saving}
                 required
               />
             </div>
@@ -135,7 +177,7 @@ const AdminCreateProduct = () => {
                   step="0.01"
                   value={form.precio}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={saving}
                   required
                 />
               </div>
@@ -149,7 +191,7 @@ const AdminCreateProduct = () => {
                   min="0"
                   value={form.stock}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={saving}
                 />
               </div>
             </div>
@@ -164,7 +206,7 @@ const AdminCreateProduct = () => {
                   placeholder="Ej: Sillas, Mesas, Camas"
                   value={form.categoria}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={saving}
                 />
               </div>
               <div className="col-md-6">
@@ -176,7 +218,7 @@ const AdminCreateProduct = () => {
                   placeholder="https://ejemplo.com/imagen.jpg"
                   value={form.imagenUrl}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={saving}
                 />
               </div>
             </div>
@@ -185,32 +227,17 @@ const AdminCreateProduct = () => {
               <button 
                 type="submit" 
                 className="btn btn-success"
-                disabled={loading}
+                disabled={saving}
               >
-                {loading ? 'Creando...' : '✓ Crear Producto'}
-              </button>
-              <button 
-                type="button" 
-                className="btn btn-outline-secondary"
-                onClick={() => setForm({
-                  nombre: '',
-                  descripcion: '',
-                  precio: '',
-                  stock: '',
-                  categoria: '',
-                  imagenUrl: ''
-                })}
-                disabled={loading}
-              >
-                Limpiar
+                {saving ? 'Guardando...' : '✓ Guardar Cambios'}
               </button>
               <button 
                 type="button" 
                 className="btn btn-outline-dark"
                 onClick={() => navigate('/admin/productos')}
-                disabled={loading}
+                disabled={saving}
               >
-                ← Volver
+                ← Cancelar
               </button>
             </div>
           </form>
@@ -220,4 +247,4 @@ const AdminCreateProduct = () => {
   );
 };
 
-export default AdminCreateProduct;
+export default AdminEditProduct;

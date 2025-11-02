@@ -110,6 +110,27 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 Contacto
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link px-3 py-2 rounded-3 fw-semibold"
+                to="/admin/productos"
+                style={{ 
+                  transition: 'all 0.3s ease',
+                  color: 'rgba(255, 255, 255, 0.9)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                }}
+              >
+                <i className="bi bi-gear me-1"></i>
+                Admin
+              </Link>
+            </li>
           </ul>
 
           <ul className="navbar-nav ms-auto">

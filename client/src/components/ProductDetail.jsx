@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { getProductById } from '../utils/productApi';
 import { getProductImageSrc, getProductTitle, getProductText } from '../utils/productView';
 
 const ProductDetail = ({ onAddToCart }) => {
@@ -10,22 +11,21 @@ const ProductDetail = ({ onAddToCart }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`http://localhost:4000/api/productos/${id}`, { headers: { "Authorization": "muebles123" } })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Producto no encontrado');
-        }
-        return res.json();
-      })
-      .then(data => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getProductById(id);
         setProduct(data);
+      } catch (err) {
+        console.error('Error loading product:', err);
+        setError(err.message || 'Producto no encontrado');
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   if (loading) return <div className="text-center"><p>Cargando producto...</p></div>;

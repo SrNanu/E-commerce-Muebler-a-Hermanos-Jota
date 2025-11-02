@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import { getAllProducts } from '../utils/productApi';
 import { getProductTitle, getProductText, getProductId } from '../utils/productView';
 
 const ProductList = () => {
@@ -10,21 +11,21 @@ const ProductList = () => {
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/productos", { headers: { "Authorization": "muebles123" } })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('La respuesta de la red no fue correcta');
-        }
-        return res.json();
-      })
-      .then(data => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getAllProducts();
         setProducts(data);
-        setLoading(false);
-      })
-      .catch(err => {
+      } catch (err) {
+        console.error('Error loading products:', err);
         setError(`Error al cargar productos: ${err.message}`);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   if (loading) return <div className="text-center"><p>Cargando productos...</p></div>;

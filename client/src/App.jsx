@@ -8,6 +8,8 @@ import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
 import Cart from './components/Cart';
 import AdminCreateProduct from './components/AdminCreateProduct';
+import AdminEditProduct from './components/AdminEditProduct';
+import AdminProductList from './components/AdminProductList';
 import { getProductId } from './utils/productView';
 import './styles/App.css';
 
@@ -79,6 +81,15 @@ function App() {
               </div>
             }
           />
+          {/* Rutas de administración */}
+          <Route
+            path="/admin/productos"
+            element={
+              <div className="container py-4">
+                <AdminProductList />
+              </div>
+            }
+          />
           <Route
             path="/admin/crear-producto"
             element={
@@ -87,7 +98,15 @@ function App() {
               </div>
             }
           />
-          {/* Ruta opcional para el carrito para no romper UX existente */}
+          <Route
+            path="/admin/editar-producto/:id"
+            element={
+              <div className="container py-4">
+                <AdminEditProduct />
+              </div>
+            }
+          />
+          {/* Ruta para el carrito */}
           <Route
             path="/carrito"
             element={
