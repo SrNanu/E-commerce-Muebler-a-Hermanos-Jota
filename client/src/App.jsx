@@ -8,6 +8,7 @@ import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
 import Cart from './components/Cart';
 import AdminCreateProduct from './components/AdminCreateProduct';
+import { getProductId } from './utils/productView';
 import './styles/App.css';
 
 function App() {
@@ -15,13 +16,14 @@ function App() {
   const [carrito, setCarrito] = useState([]);
 
   const handleAddToCart = (product) => {
-    // Verificar si el producto ya está en el carrito
-    const existingProduct = carrito.find(item => item.id === product.id);
+    // Verificar si el producto ya está en el carrito usando getProductId
+    const productId = getProductId(product);
+    const existingProduct = carrito.find(item => getProductId(item) === productId);
     
     if (existingProduct) {
       // Si ya existe, incrementar la cantidad
       setCarrito(carrito.map(item => 
-        item.id === product.id 
+        getProductId(item) === productId 
           ? { ...item, cantidad: item.cantidad + 1 }
           : item
       ));
@@ -32,13 +34,13 @@ function App() {
   };
 
   const handleRemoveFromCart = (productId) => {
-    setCarrito(carrito.filter(item => item.id !== productId));
+    setCarrito(carrito.filter(item => getProductId(item) !== productId));
   };
 
   const handleUpdateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) return;
     setCarrito(carrito.map(item => 
-      item.id === productId 
+      getProductId(item) === productId 
         ? { ...item, cantidad: newQuantity }
         : item
     ));

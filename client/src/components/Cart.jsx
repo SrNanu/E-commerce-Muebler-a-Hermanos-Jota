@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProductImageSrc, getProductTitle, getProductText } from '../utils/productView';
+import { getProductImageSrc, getProductTitle, getProductText, getProductId } from '../utils/productView';
 
 const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
   const calcularTotal = () => {
@@ -72,7 +72,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
               <div className="card shadow-sm">
                 <div className="card-body">
                   {carrito.map((item) => (
-                    <div key={item.id} className="row align-items-center mb-3 pb-3 border-bottom">
+                    <div key={getProductId(item)} className="row align-items-center mb-3 pb-3 border-bottom">
                       <div className="col-md-2 col-3">
                         {(() => {
                           const src = getProductImageSrc(item);
@@ -95,7 +95,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                         <div className="input-group input-group-sm">
                           <button 
                             className="btn btn-outline-secondary"
-                            onClick={() => onUpdateQuantity(item.id, item.cantidad - 1)}
+                            onClick={() => onUpdateQuantity(getProductId(item), item.cantidad - 1)}
                             disabled={item.cantidad <= 1}
                           >
                             -
@@ -109,7 +109,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                           />
                           <button 
                             className="btn btn-outline-secondary"
-                            onClick={() => onUpdateQuantity(item.id, item.cantidad + 1)}
+                            onClick={() => onUpdateQuantity(getProductId(item), item.cantidad + 1)}
                           >
                             +
                           </button>
@@ -121,7 +121,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                       <div className="col-md-2 col-4 text-end">
                         <button 
                           className="btn btn-sm btn-outline-danger"
-                          onClick={() => onRemoveFromCart(item.id)}
+                          onClick={() => onRemoveFromCart(getProductId(item))}
                           title="Eliminar del carrito"
                         >
                           🗑️
