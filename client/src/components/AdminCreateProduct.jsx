@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
+
 // Vista sencilla para crear productos (placeholder). En el futuro puede integrarse con el backend.
 const AdminCreateProduct = () => {
   const [form, setForm] = useState({
-    titulo: '',
-    texto: '',
+    nombre: '',
+    descripcion: '',
     precio: '',
-    imagen: '',
+    imagenUrl: ''
   });
 
   const handleChange = (e) => {
@@ -17,8 +18,31 @@ const AdminCreateProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí podrías hacer un fetch POST al backend: /api/productos
+    fetch('http://localhost:4000/api/productos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "muebles123"
+      },
+      body: JSON.stringify(form),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al crear el producto');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Producto creado:', data);
+        alert('Producto creado exitosamente.');
+        setForm({ titulo: '', texto: '', precio: '', imagen: '' });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Error al crear el producto.');
+      });
+
     console.log('Crear producto (demo):', form);
-    alert('Producto preparado para crear (demo). Integra el POST al backend cuando esté listo.');
   };
 
   return (
@@ -28,12 +52,12 @@ const AdminCreateProduct = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="form-label">Título</label>
+              <label className="form-label">Nombre</label>
               <input
                 type="text"
-                name="titulo"
+                name="nombre"
                 className="form-control"
-                value={form.titulo}
+                value={form.nombre}
                 onChange={handleChange}
                 required
               />
@@ -42,10 +66,10 @@ const AdminCreateProduct = () => {
             <div className="mb-3">
               <label className="form-label">Descripción</label>
               <textarea
-                name="texto"
+                name="descripcion"
                 className="form-control"
                 rows={3}
-                value={form.texto}
+                value={form.descripcion}
                 onChange={handleChange}
                 required
               />
@@ -66,9 +90,9 @@ const AdminCreateProduct = () => {
                 <label className="form-label">URL de imagen</label>
                 <input
                   type="text"
-                  name="imagen"
+                  name="imagenUrl"
                   className="form-control"
-                  value={form.imagen}
+                  value={form.imagenUrl}
                   onChange={handleChange}
                 />
               </div>
