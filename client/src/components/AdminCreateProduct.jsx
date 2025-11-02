@@ -35,7 +35,7 @@ const AdminCreateProduct = () => {
       .then((data) => {
         console.log('Producto creado:', data);
         alert('Producto creado exitosamente.');
-        setForm({ titulo: '', texto: '', precio: '', imagen: '' });
+        setForm({ nombre: '', descripcion: '', precio: '', imagenUrl: '' });
       })
       .catch((error) => {
         console.error('Error:', error);
