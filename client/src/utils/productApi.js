@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:4000/api/productos';
+const API_BASE_URL = 'https://e-commerce-muebler-a-hermanos-jota.onrender.com/api/productos';
 const AUTH_HEADER = 'muebles123';
 
 /**
