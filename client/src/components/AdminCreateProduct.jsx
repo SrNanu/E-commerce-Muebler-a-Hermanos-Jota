@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
-
-// Vista sencilla para crear productos (placeholder). En el futuro puede integrarse con el backend.
 const AdminCreateProduct = () => {
   const [form, setForm] = useState({
     nombre: '',
     descripcion: '',
     precio: '',
-    imagenUrl: ''
+    stock: 0,
+    imagenUrl: '',
+    atributos: [],
+    categoria: ''
   });
 
   const handleChange = (e) => {
@@ -15,9 +16,30 @@ const AdminCreateProduct = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [atributoTemp, setAtributoTemp] = useState({ nombre: '', valor: '' });
+
+  const handleAtributoAdd = () => {
+    if (atributoTemp.nombre.trim() && atributoTemp.valor.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        atributos: [...prev.atributos, { 
+          nombre: atributoTemp.nombre.trim(), 
+          valor: atributoTemp.valor.trim() 
+        }]
+      }));
+      setAtributoTemp({ nombre: '', valor: '' });
+    }
+  };
+
+  const handleAtributoRemove = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      atributos: prev.atributos.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí podrías hacer un fetch POST al backend: /api/productos
     fetch('http://localhost:4000/api/productos', {
       method: 'POST',
       headers: {
@@ -35,14 +57,20 @@ const AdminCreateProduct = () => {
       .then((data) => {
         console.log('Producto creado:', data);
         alert('Producto creado exitosamente.');
-        setForm({ nombre: '', descripcion: '', precio: '', imagenUrl: '' });
+        setForm({
+          nombre: '',
+          descripcion: '',
+          precio: '',
+          stock: 0,
+          imagenUrl: '',
+          atributos: [],
+          categoria: ''
+        });
       })
       .catch((error) => {
         console.error('Error:', error);
         alert('Error al crear el producto.');
       });
-
-    console.log('Crear producto (demo):', form);
   };
 
   return (
@@ -52,7 +80,7 @@ const AdminCreateProduct = () => {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label className="form-label">Nombre</label>
+              <label className="form-label">Nombre*</label>
               <input
                 type="text"
                 name="nombre"
@@ -71,36 +99,113 @@ const AdminCreateProduct = () => {
                 rows={3}
                 value={form.descripcion}
                 onChange={handleChange}
-                required
               />
             </div>
 
-            <div className="row g-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
-                <label className="form-label">Precio (opcional)</label>
+                <label className="form-label">Precio*</label>
                 <input
                   type="number"
                   name="precio"
                   className="form-control"
                   value={form.precio}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">URL de imagen</label>
+                <label className="form-label">Stock</label>
                 <input
-                  type="text"
-                  name="imagenUrl"
+                  type="number"
+                  name="stock"
                   className="form-control"
-                  value={form.imagenUrl}
+                  value={form.stock}
                   onChange={handleChange}
                 />
               </div>
             </div>
 
+            <div className="mb-3">
+              <label className="form-label">Categoría</label>
+              <input
+                type="text"
+                name="categoria"
+                className="form-control"
+                value={form.categoria}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">URL de imagen</label>
+              <input
+                type="text"
+                name="imagenUrl"
+                className="form-control"
+                value={form.imagenUrl}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Atributos</label>
+              <div className="input-group mb-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Nombre del atributo"
+                  value={atributoTemp.nombre}
+                  onChange={(e) => setAtributoTemp(prev => ({...prev, nombre: e.target.value}))}
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Valor del atributo"
+                  value={atributoTemp.valor}
+                  onChange={(e) => setAtributoTemp(prev => ({...prev, valor: e.target.value}))}
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={handleAtributoAdd}
+                >
+                  Agregar
+                </button>
+              </div>
+              {form.atributos.length > 0 && (
+                <div className="mt-2">
+                  {form.atributos.map((attr, index) => (
+                    <span
+                      key={index}
+                      className="badge bg-secondary me-2 mb-2"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleAtributoRemove(index)}
+                    >
+                      {attr.nombre}: {attr.valor} ×
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="mt-4 d-flex gap-2">
               <button type="submit" className="btn btn-primary">Crear</button>
-              <button type="reset" className="btn btn-secondary" onClick={() => setForm({ titulo: '', texto: '', precio: '', imagen: '' })}>Limpiar</button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setForm({
+                  nombre: '',
+                  descripcion: '',
+                  precio: '',
+                  stock: 0,
+                  imagenUrl: '',
+                  atributos: [],
+                  categoria: ''
+                })}
+              >
+                Limpiar
+              </button>
             </div>
           </form>
         </div>
