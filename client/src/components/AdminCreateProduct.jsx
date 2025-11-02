@@ -10,8 +10,10 @@ const AdminCreateProduct = () => {
     precio: '',
     stock: '',
     categoria: '',
-    imagenUrl: ''
+    imagenUrl: '',
+    atributos: []
   });
+  const [atributoTemp, setAtributoTemp] = useState({ nombre: '', valor: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -21,6 +23,26 @@ const AdminCreateProduct = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleAtributoAdd = () => {
+    if (atributoTemp.nombre.trim() && atributoTemp.valor.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        atributos: [...prev.atributos, { 
+          nombre: atributoTemp.nombre.trim(), 
+          valor: atributoTemp.valor.trim() 
+        }]
+      }));
+      setAtributoTemp({ nombre: '', valor: '' });
+    }
+  };
+
+  const handleAtributoRemove = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      atributos: prev.atributos.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +50,6 @@ const AdminCreateProduct = () => {
     setSuccess(false);
 
     try {
-      // Validar campos requeridos
       if (!form.nombre.trim()) {
         throw new Error('El nombre del producto es obligatorio');
       }
@@ -45,25 +66,24 @@ const AdminCreateProduct = () => {
         precio: parseFloat(form.precio),
         stock: form.stock ? parseInt(form.stock) : 0,
         categoria: form.categoria.trim() || 'Sin categoría',
-        imagenUrl: form.imagenUrl.trim()
+        imagenUrl: form.imagenUrl.trim(),
+        atributos: form.atributos
       };
 
-      const data = await createProduct(productData);
+      await createProduct(productData);
       
       setSuccess(true);
-      console.log('Producto creado:', data);
       
-      // Limpiar formulario
       setForm({
         nombre: '',
         descripcion: '',
         precio: '',
         stock: '',
         categoria: '',
-        imagenUrl: ''
+        imagenUrl: '',
+        atributos: []
       });
 
-      // Mostrar mensaje de éxito y redirigir
       setTimeout(() => {
         navigate('/admin/productos');
       }, 1500);
@@ -124,7 +144,7 @@ const AdminCreateProduct = () => {
               />
             </div>
 
-            <div className="row g-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label fw-bold">Precio (ARS) *</label>
                 <input
@@ -154,7 +174,7 @@ const AdminCreateProduct = () => {
               </div>
             </div>
 
-            <div className="row g-3">
+            <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label fw-bold">Categoría</label>
                 <input
@@ -181,6 +201,50 @@ const AdminCreateProduct = () => {
               </div>
             </div>
 
+            <div className="mb-3">
+              <label className="form-label fw-bold">Atributos</label>
+              <div className="input-group mb-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Nombre del atributo"
+                  value={atributoTemp.nombre}
+                  onChange={(e) => setAtributoTemp(prev => ({...prev, nombre: e.target.value}))}
+                  disabled={loading}
+                />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Valor del atributo"
+                  value={atributoTemp.valor}
+                  onChange={(e) => setAtributoTemp(prev => ({...prev, valor: e.target.value}))}
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={handleAtributoAdd}
+                  disabled={loading}
+                >
+                  Agregar
+                </button>
+              </div>
+              {form.atributos.length > 0 && (
+                <div className="mt-2">
+                  {form.atributos.map((attr, index) => (
+                    <span
+                      key={index}
+                      className="badge bg-secondary me-2 mb-2"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleAtributoRemove(index)}
+                    >
+                      {attr.nombre}: {attr.valor} ×
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="mt-4 d-flex gap-2">
               <button 
                 type="submit" 
@@ -198,7 +262,8 @@ const AdminCreateProduct = () => {
                   precio: '',
                   stock: '',
                   categoria: '',
-                  imagenUrl: ''
+                  imagenUrl: '',
+                  atributos: []
                 })}
                 disabled={loading}
               >
