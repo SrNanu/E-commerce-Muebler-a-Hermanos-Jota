@@ -215,7 +215,7 @@ const AdminEditProduct = () => {
                   type="text"
                   name="imagenUrl"
                   className="form-control"
-                  placeholder="https://ejemplo.com/imagen.jpg"
+                  placeholder="img/productos/ejemplo.jpg"
                   value={form.imagenUrl}
                   onChange={handleChange}
                   disabled={saving}
