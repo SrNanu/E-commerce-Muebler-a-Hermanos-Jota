@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const path = require("path")
 const logger = require("./middlewares/logger")
 const productosRoutes = require("./routes/productos.routes")
 
@@ -10,7 +11,7 @@ app.use(express.json())
 app.use(logger)
 
 // Servir archivos estáticos desde la carpeta 'public'
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, '../public')))
 
 app.use("/api/productos", productosRoutes)
 
