@@ -1,6 +1,5 @@
-import API_BASE_URL from '../config/api.js';
 
-const API_PRODUCTOS_URL = `${API_BASE_URL}/api/productos`;
+const API_PRODUCTOS_URL = `${import.meta.env.VITE_API_BASE_URL}/api/productos`;
 const AUTH_HEADER = 'muebles123';
 
 /**
