@@ -74,25 +74,6 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
 
    ```
 ---
-## 🔐 Autenticación
-El sistema cuenta con un guard simple en el backend, implementado sin librerías externas:
- ```bash
-   const authGuard = (req, res, next) => {
-  const passwordAdmin = 'muebles123';
-  const tokenRecibido = req.headers['authorization'];
-
-  if (tokenRecibido !== passwordAdmin) {
-    return res.status(401).json({ error: 'Acceso no autorizado.' });
-  }
-
-  next();
-};
-   ```
-Se requiere este header para acceder a las rutas de administración:
- ```bash
-   Authorization: muebles123
-   ```
----
 ## 🚀 Instalación y uso
 1. Clonar este repositorio:  
    ```bash
@@ -109,6 +90,10 @@ Se requiere este header para acceder a las rutas de administración:
    cd ../client
    npm install
    ```
+3. Agregar variables locales en .env
+   Front:
+   Poner el siguiente valor en la variable de entorno para ejecutar de forma local.
+   API_BASE_URL = 'https://localhost:5173/api/productos';
 
 3. Correr los servidores en desarrollo:
    ```bash
@@ -125,12 +110,9 @@ Se requiere este header para acceder a las rutas de administración:
 4. Acceder a la aplicación:
    - Frontend: `http://localhost:5173/`
    - API REST: `http://localhost:4000/api/productos`
-  
-     
 
-5. Notas de ejecución:
-   - El backend sirve imágenes estáticas desde `backend/public/img`.
-   - Algunas peticiones del frontend incluyen el header `Authorization: muebles123` (guard simple). No es requerido por la consigna, pero está implementado.
+
+
 ---
 ##📸 Rutas principales del frontend
 | Ruta                         | Descripción             |
@@ -153,7 +135,6 @@ Se requiere este header para acceder a las rutas de administración:
 - MongoDB Atlas para alojamiento de datos en la nube.
 - Bootstrap para lograr un diseño responsive y rápido.
 - Arquitectura modular y limpia, separando backend y frontend.
-- Autenticación sencilla por header (`Authorization: muebles123`) solo para simular guard.
 - Imágenes servidas por backend para evitar rutas relativas en el cliente.
 
 ---

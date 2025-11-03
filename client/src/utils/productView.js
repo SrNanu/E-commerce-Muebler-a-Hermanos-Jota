@@ -13,7 +13,7 @@ export const getProductText = (product) => {
 export const getProductImageSrc = (product) => {
   const path = product?.imagenUrl || product?.imagen || "";
   if (!path) return "";
-  return path.startsWith("http") ? path : `https://e-commerce-muebler-a-hermanos-jota.onrender.com/${path}`;
+  return path.startsWith("http") ? path : `${API_BASE_URL}/${path}`;
 };
 
 export const getProductPrice = (product) => {

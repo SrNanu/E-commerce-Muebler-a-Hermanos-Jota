@@ -1,4 +1,6 @@
-const API_BASE_URL = 'https://e-commerce-muebler-a-hermanos-jota.onrender.com/api/productos';
+import API_BASE_URL from '../config/api.js';
+
+const API_PRODUCTOS_URL = `${API_BASE_URL}/api/productos`;
 const AUTH_HEADER = 'muebles123';
 
 /**
@@ -6,7 +8,7 @@ const AUTH_HEADER = 'muebles123';
  */
 export const getAllProducts = async () => {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(API_PRODUCTOS_URL, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ export const getAllProducts = async () => {
  */
 export const getProductById = async (id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
+    const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ export const getProductById = async (id) => {
  */
 export const createProduct = async (productData) => {
   try {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(API_PRODUCTOS_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +82,7 @@ export const createProduct = async (productData) => {
  */
 export const updateProduct = async (id, productData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
+    const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +108,7 @@ export const updateProduct = async (id, productData) => {
  */
 export const deleteProduct = async (id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
+    const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
