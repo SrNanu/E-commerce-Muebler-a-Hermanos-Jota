@@ -1,12 +1,12 @@
 # 🪑 E-commerce Mueblería Hermanos Jota
 
-Proyecto final desarrollado para el curso de **MERN Stack** en el **Instituto Tecnológico de Buenos Aires (ITBA)**.  
-Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa ficticia de la mueblería **"Hermanos Jota"**, ofreciendo una plataforma intuitiva para explorar productos, ver detalles y realizar compras en línea.
+Proyecto final desarrollado para el curso de MERN Stack en el Instituto Tecnológico de Buenos Aires (ITBA).
+Este proyecto implementa un E-commerce funcional para la mueblería ficticia "Hermanos Jota", permitiendo explorar productos, ver detalles, gestionar un carrito y administrar el catálogo desde un panel de administración protegido.
 
 ---
 
 ## 🌐 Demo desplegada
-🔗 [Ver proyecto desplegado](https://juan-nogueira.github.io/Muebleria-Hermanos-Jota)
+🔗 [Ver proyecto desplegado](https://e-commerce-muebler-a-hermanos-jota.vercel.app)
 
 ---
 
@@ -20,25 +20,79 @@ Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa fic
 ---
 
 ## ✨ Funcionalidades principales
-- 🔎 **Búsqueda de productos** dentro del catálogo.  
-- 📄 **Visualización de detalles** de cada producto seleccionado.  
-- 💬 **Contacto con empleados** de la tienda.  
-- 🛒 **Carrito de compras** para agregar productos.  
-
+- **🛍️ Cliente**
+  - 🔎 Exploración de productos con detalles individuales.
+  - 🛒 Carrito de compras: agregar, eliminar y modificar cantidades..
+  - 💬 Formulario de contacto para comunicarse con la empresa.
+- **🧰 Panel de administración**
+  - 📦 Listado de productos con acceso restring
+  - ➕ Creación de nuevos productos.
+  - ✏️ Edición de productos existentes.
+  - ❌ Eliminación de productos.
 ---
 
 ## 🛠️ Tecnologías utilizadas
 - **Frontend:**  
-  - HTML  
-  - CSS  
-  - JavaScript  
-  - Bootstrap  
-
+  - React (con Vite) 
+  - React Router DOM  
+  - Bootstrap 5  
+  - CSS personalizado
+- **Backend:** 
+  - Node.js
+  - Express.js
+  - MongoDB Atlas
+  - Mongoose
 - **Otros recursos:**  
-  - GitHub Copilot (asistencia en el desarrollo)  
+  - GitHub Copilot (asistencia en el desarrollo)
+  - CORS y middlewares personalizados
 
 ---
+##🧱 Arquitectura y estructura
+**📁 Monorepo**
+```bash
+   E-COMMERCE-MUEBLERIA-HERMANOS-JOTA/
+│
+├── backend/               # Servidor Express + MongoDB
+│   ├── src/
+│   │   ├── config/        # Conexión a MongoDB Atlas
+│   │   ├── controllers/   # Lógica de productos
+│   │   ├── middlewares/   # authGuard y logger
+│   │   ├── models/        # Modelo Product
+│   │   ├── routes/        # Definición de rutas /api/productos
+│   │   ├── app.js         # Configuración principal
+│   │   └── server.js      # Arranque del servidor
+│   └── public/img/        # Imágenes estáticas de productos
+│
+└── client/                # Frontend con React + Vite
+    ├── src/
+    │   ├── components/    # Componentes reutilizables
+    │   ├── styles/        # Archivos CSS
+    │   ├── utils/         # Funciones auxiliares
+    │   ├── App.jsx        # Rutas y estructura principal
+    │   └── main.jsx       # Punto de entrada
+    └── public/
 
+   ```
+---
+## 🔐 Autenticación
+El sistema cuenta con un guard simple en el backend, implementado sin librerías externas:
+ ```bash
+   const authGuard = (req, res, next) => {
+  const passwordAdmin = 'muebles123';
+  const tokenRecibido = req.headers['authorization'];
+
+  if (tokenRecibido !== passwordAdmin) {
+    return res.status(401).json({ error: 'Acceso no autorizado.' });
+  }
+
+  next();
+};
+   ```
+Se requiere este header para acceder a las rutas de administración:
+ ```bash
+   Authorization: muebles123
+   ```
+---
 ## 🚀 Instalación y uso
 1. Clonar este repositorio:  
    ```bash
@@ -71,34 +125,34 @@ Este proyecto consiste en el desarrollo de un **E-commerce** para la empresa fic
 4. Acceder a la aplicación:
    - Frontend: `http://localhost:5173/`
    - API REST: `http://localhost:4000/api/productos`
+  
+     
 
 5. Notas de ejecución:
    - El backend sirve imágenes estáticas desde `backend/public/img`.
    - Algunas peticiones del frontend incluyen el header `Authorization: muebles123` (guard simple). No es requerido por la consigna, pero está implementado.
-
+---
+##📸 Rutas principales del frontend
+| Ruta                         | Descripción             |
+| ---------------------------- | ----------------------- |
+| `/`                          | Página de inicio        |
+| `/productos`                 | Catálogo general        |
+| `/productos/:id`             | Detalle de producto     |
+| `/carrito`                   | Carrito de compras      |
+| `/contacto`                  | Formulario de contacto  |
+| `/admin/productos`           | Panel de administración |
+| `/admin/crear-producto`      | Alta de producto        |
+| `/admin/editar-producto/:id` | Edición de producto     |
 ---
 
 ## 🧱 Arquitectura y decisiones
 
-### Monorepo
-- Estructura raíz con dos proyectos: `/backend` (Node/Express) y `/client` (React + Vite).
-
-### Backend (Express)
-- `src/app.js`: configuración de middlewares (`cors`, `express.json`, `logger`), rutas y manejadores de 404 y errores.
-- `src/routes/productos.routes.js`: rutas `GET /api/productos` y `GET /api/productos/:id`.
-- Datos en MongoDB Atlas: base `muebleria_hermanos_jota`, colección `products` (modelo `Product`).
-- `src/middlewares/logger.js`: logging de método y URL.
-- `src/server.js`: arranque del servidor (puerto 4000).
-
-### Frontend (React)
-- `src/App.jsx`: estado de vista (`catalog`, `detail`, `contact`) sin React Router; renderizado condicional.
-- Componentes: `Navbar`, `Footer`, `ProductCard`, `ProductList`, `ProductDetail`, `ContactForm`.
-- `ProductList` hace `fetch` a la API y maneja estados de carga y error.
-- `ContactForm` es controlado con `useState`, registra datos en consola y muestra mensaje de éxito.
 
 ### Decisiones claves
-- Sin React Router por consigna: navegación basada en estado en `App.jsx`.
-- Bootstrap via CDN para estilos rápidos y consistentes.
+- Uso de React Router DOM para navegación completa.
+- MongoDB Atlas para alojamiento de datos en la nube.
+- Bootstrap para lograr un diseño responsive y rápido.
+- Arquitectura modular y limpia, separando backend y frontend.
 - Autenticación sencilla por header (`Authorization: muebles123`) solo para simular guard.
 - Imágenes servidas por backend para evitar rutas relativas en el cliente.
 
