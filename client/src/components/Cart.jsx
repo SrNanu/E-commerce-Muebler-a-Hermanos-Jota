@@ -1,19 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { getProductImageSrc, getProductTitle, getProductText, getProductId } from '../utils/productView';
 
-const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
-  const calcularTotal = () => {
-    return carrito.reduce((total, item) => {
-      if (!item.precio) return total;
-      
-      const precio = typeof item.precio === 'string' 
-        ? parseFloat(item.precio.replace(/[^0-9.-]+/g, ''))
-        : item.precio;
-      
-      if (isNaN(precio)) return total;
-      
-      return total + (precio * item.cantidad);
-    }, 0);
+const Cart = () => {
+  const navigate = useNavigate();
+  const { carrito, removeFromCart, updateQuantity, clearCart, getCartTotal } = useCart();
+  const { isAuthenticated, token } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const handleFinalizarCompra = async () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const productos = carrito.map(item => ({
+        producto: getProductId(item),
+        cantidad: item.cantidad
+      }));
+
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ productos })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al crear el pedido');
+      }
+
+      setSuccess(true);
+      clearCart();
+
+      // Redirigir después de 2 segundos
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (err) {
+      console.error('Error al finalizar compra:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatearPrecio = (precio) => {
@@ -28,6 +68,24 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
     return `$${precioNum.toLocaleString('es-AR')}`;
   };
 
+  if (success) {
+    return (
+      <div className="container my-5">
+        <div className="row">
+          <div className="col-12">
+            <div className="text-center py-5">
+              <div className="mb-4">
+                <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '5rem' }}></i>
+              </div>
+              <h2 className="mb-4">¡Pedido realizado con éxito!</h2>
+              <p className="text-muted mb-4">Te redirigiremos a la página principal...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (carrito.length === 0) {
     return (
       <div className="container my-5">
@@ -38,7 +96,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
               <p className="text-muted mb-4">¡Agrega algunos productos para comenzar!</p>
               <button 
                 className="btn btn-primary btn-lg"
-                onClick={onBack}
+                onClick={() => navigate('/productos')}
                 style={{ 
                   backgroundColor: 'var(--color-siena-tostado)', 
                   borderColor: 'var(--color-siena-tostado)' 
@@ -61,11 +119,18 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
             <h2 className="titulo-principal">🛒 Mi Carrito</h2>
             <button 
               className="btn btn-outline-secondary"
-              onClick={onBack}
+              onClick={() => navigate('/productos')}
             >
               ← Seguir comprando
             </button>
           </div>
+
+          {error && (
+            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+              {error}
+              <button type="button" className="btn-close" onClick={() => setError('')}></button>
+            </div>
+          )}
 
           <div className="row">
             <div className="col-lg-8 mb-4">
@@ -95,7 +160,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                         <div className="input-group input-group-sm">
                           <button 
                             className="btn btn-outline-secondary"
-                            onClick={() => onUpdateQuantity(getProductId(item), item.cantidad - 1)}
+                            onClick={() => updateQuantity(getProductId(item), item.cantidad - 1)}
                             disabled={item.cantidad <= 1}
                           >
                             -
@@ -109,7 +174,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                           />
                           <button 
                             className="btn btn-outline-secondary"
-                            onClick={() => onUpdateQuantity(getProductId(item), item.cantidad + 1)}
+                            onClick={() => updateQuantity(getProductId(item), item.cantidad + 1)}
                           >
                             +
                           </button>
@@ -121,7 +186,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                       <div className="col-md-2 col-4 text-end">
                         <button 
                           className="btn btn-sm btn-outline-danger"
-                          onClick={() => onRemoveFromCart(getProductId(item))}
+                          onClick={() => removeFromCart(getProductId(item))}
                           title="Eliminar del carrito"
                         >
                           🗑️
@@ -140,7 +205,7 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                   
                   <div className="d-flex justify-content-between mb-2">
                     <span>Subtotal ({carrito.length} {carrito.length === 1 ? 'producto' : 'productos'})</span>
-                    <strong>{calcularTotal() > 0 ? formatearPrecio(calcularTotal()) : 'A consultar'}</strong>
+                    <strong>{getCartTotal() > 0 ? formatearPrecio(getCartTotal()) : 'A consultar'}</strong>
                   </div>
                   
                   <div className="d-flex justify-content-between mb-2 text-muted">
@@ -153,9 +218,15 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                   <div className="d-flex justify-content-between mb-4">
                     <h5>Total</h5>
                     <h5 style={{ color: 'var(--color-siena-tostado)' }}>
-                      {calcularTotal() > 0 ? formatearPrecio(calcularTotal()) : 'A consultar'}
+                      {getCartTotal() > 0 ? formatearPrecio(getCartTotal()) : 'A consultar'}
                     </h5>
                   </div>
+                  
+                  {!isAuthenticated && (
+                    <div className="alert alert-info small mb-3">
+                      <i className="bi bi-info-circle"></i> Debes iniciar sesión para finalizar tu compra
+                    </div>
+                  )}
                   
                   <button 
                     className="btn btn-success w-100 btn-lg mb-2"
@@ -163,13 +234,23 @@ const Cart = ({ carrito, onRemoveFromCart, onUpdateQuantity, onBack }) => {
                       backgroundColor: 'var(--color-siena-tostado)', 
                       borderColor: 'var(--color-siena-tostado)' 
                     }}
-                    disabled
+                    onClick={handleFinalizarCompra}
+                    disabled={loading || getCartTotal() === 0}
                   >
-                    Finalizar compra
+                    {loading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Procesando...
+                      </>
+                    ) : isAuthenticated ? (
+                      'Finalizar compra'
+                    ) : (
+                      'Iniciar sesión para comprar'
+                    )}
                   </button>
                   
                   <p className="text-muted small text-center mb-0">
-                    <em>* La compra aún no está disponible (backend pendiente)</em>
+                    <i className="bi bi-shield-check"></i> Compra 100% segura
                   </p>
                 </div>
               </div>

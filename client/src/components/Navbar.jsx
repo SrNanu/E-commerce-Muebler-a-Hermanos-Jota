@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import logo from '../assets/logo.svg';
 
-const Navbar = ({ cartItemCount = 0 }) => {
+const Navbar = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
+  const { getCartItemCount } = useCart();
+  const cartItemCount = getCartItemCount();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{
       background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
@@ -133,8 +138,9 @@ const Navbar = ({ cartItemCount = 0 }) => {
             </li>
           </ul>
 
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
+          <ul className="navbar-nav ms-auto align-items-center">
+            {/* Botón del carrito */}
+            <li className="nav-item me-2">
               <button 
                 className="btn position-relative px-3 py-2 rounded-3"
                 onClick={() => navigate('/carrito')}
@@ -174,6 +180,85 @@ const Navbar = ({ cartItemCount = 0 }) => {
                 )}
               </button>
             </li>
+
+            {/* Botones de autenticación */}
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item me-2">
+                  <Link
+                    className="nav-link px-3 py-2 rounded-3 fw-semibold"
+                    to="/perfil"
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      color: 'rgba(255, 255, 255, 0.9)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.target.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                    }}
+                  >
+                    <i className="bi bi-person-circle me-1"></i>
+                    <span className="d-none d-lg-inline">{user?.nombre}</span>
+                    <span className="d-inline d-lg-none">Perfil</span>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-outline-light px-3 py-2 rounded-3"
+                    onClick={logout}
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      fontWeight: '600'
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-right me-1"></i>
+                    Salir
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item me-2">
+                  <Link
+                    className="btn btn-outline-light px-3 py-2 rounded-3"
+                    to="/login"
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      fontWeight: '600'
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-in-right me-1"></i>
+                    Ingresar
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="btn px-3 py-2 rounded-3"
+                    to="/registro"
+                    style={{ 
+                      backgroundColor: '#D4A437',
+                      border: 'none',
+                      color: '#fff',
+                      fontWeight: '600',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#E5B547';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = '#D4A437';
+                    }}
+                  >
+                    <i className="bi bi-person-plus me-1"></i>
+                    Registrarse
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

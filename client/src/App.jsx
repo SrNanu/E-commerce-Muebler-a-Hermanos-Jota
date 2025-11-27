@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useCart } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
@@ -7,56 +8,28 @@ import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
 import Cart from './components/Cart';
+import Login from './components/Login';
+import Register from './components/Register';
+import Profile from './components/Profile';
+import ProtectedRoute from './components/ProtectedRoute';
 import AdminCreateProduct from './components/AdminCreateProduct';
 import AdminEditProduct from './components/AdminEditProduct';
 import AdminProductList from './components/AdminProductList';
-import { getProductId } from './utils/productView';
 import './styles/App.css';
 
 function App() {
-  const navigate = useNavigate();
-  const [carrito, setCarrito] = useState([]);
-
-  const handleAddToCart = (product) => {
-    // Verificar si el producto ya está en el carrito usando getProductId
-    const productId = getProductId(product);
-    const existingProduct = carrito.find(item => getProductId(item) === productId);
-    
-    if (existingProduct) {
-      // Si ya existe, incrementar la cantidad
-      setCarrito(carrito.map(item => 
-        getProductId(item) === productId 
-          ? { ...item, cantidad: item.cantidad + 1 }
-          : item
-      ));
-    } else {
-      // Si no existe, agregarlo con cantidad 1
-      setCarrito([...carrito, { ...product, cantidad: 1 }]);
-    }
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCarrito(carrito.filter(item => getProductId(item) !== productId));
-  };
-
-  const handleUpdateQuantity = (productId, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCarrito(carrito.map(item => 
-      getProductId(item) === productId 
-        ? { ...item, cantidad: newQuantity }
-        : item
-    ));
-  };
+  const { addToCart } = useCart();
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Navbar cartItemCount={carrito.length} />
+      <Navbar />
       <main className="py-0">
         <Routes>
-          <Route
-            path="/"
-            element={<Home />}
-          />
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Register />} />
+          
           <Route
             path="/productos"
             element={
@@ -69,7 +42,7 @@ function App() {
             path="/productos/:id"
             element={
               <div className="container py-4">
-                <ProductDetail onAddToCart={handleAddToCart} />
+                <ProductDetail onAddToCart={addToCart} />
               </div>
             }
           />
@@ -81,43 +54,47 @@ function App() {
               </div>
             }
           />
-          {/* Rutas de administración */}
+          <Route path="/carrito" element={<Cart />} />
+
+          {/* Rutas protegidas */}
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Rutas de administración (protegidas) */}
           <Route
             path="/admin/productos"
             element={
-              <div className="container py-4">
-                <AdminProductList />
-              </div>
+              <ProtectedRoute>
+                <div className="container py-4">
+                  <AdminProductList />
+                </div>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/admin/crear-producto"
             element={
-              <div className="container py-4">
-                <AdminCreateProduct />
-              </div>
+              <ProtectedRoute>
+                <div className="container py-4">
+                  <AdminCreateProduct />
+                </div>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/admin/editar-producto/:id"
             element={
-              <div className="container py-4">
-                <AdminEditProduct />
-              </div>
-            }
-          />
-          {/* Ruta para el carrito */}
-          <Route
-            path="/carrito"
-            element={
-              <div className="container py-4">
-                <Cart 
-                  carrito={carrito}
-                  onRemoveFromCart={handleRemoveFromCart}
-                  onUpdateQuantity={handleUpdateQuantity}
-                  onBack={() => navigate('/productos')}
-                />
-              </div>
+              <ProtectedRoute>
+                <div className="container py-4">
+                  <AdminEditProduct />
+                </div>
+              </ProtectedRoute>
             }
           />
         </Routes>
