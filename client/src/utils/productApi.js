@@ -1,17 +1,20 @@
 
 const API_PRODUCTOS_URL = `${import.meta.env.VITE_API_BASE_URL}/api/productos`;
-const AUTH_HEADER = 'muebles123';
+
+// Obtener token del localStorage
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+};
 
 /**
- * Obtiene todos los productos
+ * Obtiene todos los productos (público - no requiere autenticación)
  */
 export const getAllProducts = async () => {
   try {
     const response = await fetch(API_PRODUCTOS_URL, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': AUTH_HEADER
+        'Content-Type': 'application/json'
       }
     });
 
@@ -27,15 +30,14 @@ export const getAllProducts = async () => {
 };
 
 /**
- * Obtiene un producto por ID
+ * Obtiene un producto por ID (público - no requiere autenticación)
  */
 export const getProductById = async (id) => {
   try {
     const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': AUTH_HEADER
+        'Content-Type': 'application/json'
       }
     });
 
@@ -51,15 +53,16 @@ export const getProductById = async (id) => {
 };
 
 /**
- * Crea un nuevo producto
+ * Crea un nuevo producto (requiere autenticación)
  */
 export const createProduct = async (productData) => {
   try {
+    const token = getAuthToken();
     const response = await fetch(API_PRODUCTOS_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': AUTH_HEADER
+        'Authorization': token ? `Bearer ${token}` : ''
       },
       body: JSON.stringify(productData)
     });
@@ -77,15 +80,16 @@ export const createProduct = async (productData) => {
 };
 
 /**
- * Actualiza un producto existente
+ * Actualiza un producto existente (requiere autenticación)
  */
 export const updateProduct = async (id, productData) => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': AUTH_HEADER
+        'Authorization': token ? `Bearer ${token}` : ''
       },
       body: JSON.stringify(productData)
     });
@@ -103,15 +107,16 @@ export const updateProduct = async (id, productData) => {
 };
 
 /**
- * Elimina un producto
+ * Elimina un producto (requiere autenticación)
  */
 export const deleteProduct = async (id) => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`${API_PRODUCTOS_URL}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': AUTH_HEADER
+        'Authorization': token ? `Bearer ${token}` : ''
       }
     });
 

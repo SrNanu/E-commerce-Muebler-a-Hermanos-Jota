@@ -7,14 +7,15 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/productos', { 
-      headers: { "Authorization": "muebles123" } 
-    })
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/productos`)
       .then(res => res.json())
       .then(data => {
-        // Filtrar solo productos destacados
-        const destacados = data.filter(p => p.destacado);
-        setFeaturedProducts(destacados);
+        // Verificar que data sea un array
+        if (Array.isArray(data)) {
+          // Filtrar solo productos destacados
+          const destacados = data.filter(p => p.destacado);
+          setFeaturedProducts(destacados);
+        }
         setLoading(false);
       })
       .catch(err => {
