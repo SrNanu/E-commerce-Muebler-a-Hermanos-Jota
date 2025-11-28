@@ -115,8 +115,49 @@ const getProfile = async (req, res) => {
   }
 };
 
+// Actualizar rol de un usuario (solo admin)
+const updateUserRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Acceso denegado. Se requiere rol admin' });
+    }
+
+    const validRoles = ['user', 'admin'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ error: 'Rol inválido' });
+    }
+
+    const updated = await User.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true }
+    ).select('-password');
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({
+      message: 'Rol actualizado correctamente',
+      user: {
+        id: updated._id,
+        nombre: updated.nombre,
+        email: updated.email,
+        role: updated.role
+      }
+    });
+  } catch (error) {
+    console.error('Error al actualizar rol:', error);
+    res.status(500).json({ error: 'Error al actualizar rol' });
+  }
+};
+
 module.exports = {
   register,
   login,
-  getProfile
+  getProfile,
+  updateUserRole
 };

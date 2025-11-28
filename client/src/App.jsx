@@ -13,6 +13,7 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminCreateProduct from './components/AdminCreateProduct';
+import AdminUsers from './components/AdminUsers';
 import AdminEditProduct from './components/AdminEditProduct';
 import AdminProductList from './components/AdminProductList';
 import './styles/App.css';
@@ -28,8 +29,7 @@ function App() {
           {/* Rutas públicas */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/registro" element={<Register />} />
-          
+          <Route path="/register" element={<Register />} />
           <Route
             path="/productos"
             element={
@@ -55,6 +55,17 @@ function App() {
             }
           />
           <Route path="/carrito" element={<Cart />} />
+          {/* Administración de usuarios (solo admin) */}
+          <Route
+            path="/admin/usuarios"
+            element={
+              <ProtectedRoute requireAdmin>
+                <div className="container py-4">
+                  <AdminUsers />
+                </div>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Rutas protegidas */}
           <Route

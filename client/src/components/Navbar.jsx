@@ -116,27 +116,50 @@ const Navbar = () => {
               </Link>
             </li>
             {user?.role === 'admin' && (
-              <li className="nav-item">
-                <Link
-                  className="nav-link px-3 py-2 rounded-3 fw-semibold"
-                  to="/admin/productos"
-                  style={{ 
-                    transition: 'all 0.3s ease',
-                    color: 'rgba(255, 255, 255, 0.9)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                    e.target.style.color = '#fff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.color = 'rgba(255, 255, 255, 0.9)';
-                  }}
-                >
-                  <i className="bi bi-gear me-1"></i>
-                  Admin
-                </Link>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link px-3 py-2 rounded-3 fw-semibold"
+                    to="/admin/productos"
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      color: 'rgba(255, 255, 255, 0.9)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.target.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                    }}
+                  >
+                    <i className="bi bi-box-seam me-1"></i>
+                    Productos Admin
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link px-3 py-2 rounded-3 fw-semibold"
+                    to="/admin/usuarios"
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      color: 'rgba(255, 255, 255, 0.9)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.target.style.color = '#fff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = 'rgba(255, 255, 255, 0.9)';
+                    }}
+                  >
+                    <i className="bi bi-people me-1"></i>
+                    Usuarios
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
 
@@ -240,7 +263,7 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link
                     className="btn px-3 py-2 rounded-3"
-                    to="/registro"
+                    to="/register"
                     style={{ 
                       backgroundColor: '#D4A437',
                       border: 'none',
