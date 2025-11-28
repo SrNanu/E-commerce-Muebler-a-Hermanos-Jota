@@ -70,7 +70,7 @@ function App() {
           <Route
             path="/admin/productos"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireAdmin={true}>
                 <div className="container py-4">
                   <AdminProductList />
                 </div>
@@ -80,7 +80,7 @@ function App() {
           <Route
             path="/admin/crear-producto"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireAdmin={true}>
                 <div className="container py-4">
                   <AdminCreateProduct />
                 </div>
@@ -90,7 +90,7 @@ function App() {
           <Route
             path="/admin/editar-producto/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireAdmin={true}>
                 <div className="container py-4">
                   <AdminEditProduct />
                 </div>
