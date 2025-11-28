@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  getProductImageSrc, 
+  getProductId, 
+  getProductTitle, 
+  getProductText, 
+  getProductPrice 
+} from "../utils/productView";
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -168,7 +175,7 @@ const Home = () => {
                     transition: 'transform 0.3s, box-shadow 0.3s',
                     cursor: 'pointer'
                   }}
-                  onClick={() => navigate(`/productos/${product.id}`)}
+                  onClick={() => navigate(`/productos/${getProductId(product)}`)}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-10px)';
                     e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
@@ -180,9 +187,9 @@ const Home = () => {
                 >
                   <div style={{ position: 'relative', overflow: 'hidden' }}>
                     <img 
-                      src={`http://localhost:4000/${product.imagen}`} 
+                      src={getProductImageSrc(product)} 
                       className="card-img-top" 
-                      alt={product.titulo}
+                      alt={getProductTitle(product)}
                       style={{ 
                         height: '250px', 
                         objectFit: 'cover',
@@ -199,13 +206,13 @@ const Home = () => {
                     </span>
                   </div>
                   <div className="card-body">
-                    <h5 className="card-title fw-bold">{product.titulo}</h5>
+                    <h5 className="card-title fw-bold">{getProductTitle(product)}</h5>
                     <p className="card-text text-muted small">
-                      {product.texto.substring(0, 100)}...
+                      {getProductText(product).substring(0, 100)}...
                     </p>
                     {product.precio && (
                       <h4 className="fw-bold mt-3 mb-0" style={{ color: '#D4A437' }}>
-                        ${product.precio.toLocaleString('es-AR')}
+                        ${getProductPrice(product).toLocaleString('es-AR')}
                       </h4>
                     )}
                   </div>
