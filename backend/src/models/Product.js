@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
   imagenUrl: {
     type: String
   },
+  destacado: {
+    type: Boolean,
+    default: false
+  },
   atributos: {
     type: Array,
     default: []

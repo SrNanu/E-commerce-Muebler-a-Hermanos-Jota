@@ -12,7 +12,8 @@ const AdminEditProduct = () => {
     precio: '',
     stock: '',
     categoria: '',
-    imagenUrl: ''
+    imagenUrl: '',
+    destacado: false
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -33,7 +34,8 @@ const AdminEditProduct = () => {
           precio: product.precio || '',
           stock: product.stock || '',
           categoria: product.categoria || '',
-          imagenUrl: product.imagenUrl || ''
+          imagenUrl: product.imagenUrl || '',
+          destacado: !!product.destacado
         });
       } catch (err) {
         console.error('Error loading product:', err);
@@ -77,7 +79,8 @@ const AdminEditProduct = () => {
         precio: parseFloat(form.precio),
         stock: form.stock ? parseInt(form.stock) : 0,
         categoria: form.categoria.trim() || 'Sin categoría',
-        imagenUrl: form.imagenUrl.trim()
+        imagenUrl: form.imagenUrl.trim(),
+        destacado: !!form.destacado
       };
 
       const data = await updateProduct(id, productData);
@@ -221,6 +224,18 @@ const AdminEditProduct = () => {
                   disabled={saving}
                 />
               </div>
+            </div>
+
+            <div className="mb-3 form-check">
+              <input
+                type="checkbox"
+                id="destacado"
+                className="form-check-input"
+                checked={form.destacado}
+                onChange={(e) => setForm(prev => ({ ...prev, destacado: e.target.checked }))}
+                disabled={saving}
+              />
+              <label htmlFor="destacado" className="form-check-label fw-bold">Marcar como destacado</label>
             </div>
 
             <div className="mt-4 d-flex gap-2">
