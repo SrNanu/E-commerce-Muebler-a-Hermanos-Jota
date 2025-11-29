@@ -11,6 +11,8 @@ const AdminOrdersPage = () => {
     const [ordenFecha, setOrdenFecha] = useState("antiguo") // 'reciente' o 'antiguo'
     const ordersPerPage = 5
     const [totalPages, setTotalPages] = useState(1)
+    const [searchTerm, setSearchTerm] = useState("")
+    const [searchQuery, setSearchQuery] = useState("")
     const API_ORDENES_URL = `${import.meta.env.VITE_API_BASE_URL}/api/orders/admin/all`
 
     useEffect(() => {
@@ -92,6 +94,10 @@ const AdminOrdersPage = () => {
         setOrdenFecha(ordenFecha === "reciente" ? "antiguo" : "reciente")
     }
 
+    const filteredOrders = orders.filter(order =>
+        order._id.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
     return (
         <div className="container my-5">
             <h2 className="fw-bold mb-4">📦 Gestión de Órdenes</h2>
@@ -137,6 +143,35 @@ const AdminOrdersPage = () => {
                     <button className={`btn ${estadoFiltro === "" ? "btn-secondary" : "btn-outline-secondary"}`} onClick={() => setEstadoFiltro("")}>
                         Todas
                     </button>
+
+                </div>
+
+                {/* Búsqueda */}
+                <div className="d-flex gap-2 my-2">
+                    <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Buscar por ID de pedido"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+
+                    <button
+                        className="btn btn-dark"
+                        onClick={() => setSearchQuery(searchTerm)}
+                    >
+                        Buscar
+                    </button>
+
+                    <button
+                        className="btn btn-secondary"
+                        onClick={() => {
+                            setSearchTerm("");
+                            setSearchQuery("");
+                        }}
+                    >
+                        Limpiar
+                    </button>
                 </div>
 
                 {/* Ordenamiento */}
@@ -174,102 +209,107 @@ const AdminOrdersPage = () => {
 
             {!loading && orders.length > 0 && (
                 <div>
-                    {orders.map((order) => (
-                        <div key={order._id} className="p-4 mb-4 rounded-4 border bg-white shadow-lg" style={{ transition: "0.25s", }}>
-                            <div className="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h3 className="fw-bold mb-2">
-                                        Pedido #{order._id.slice(-8).toUpperCase()}
-                                    </h3>
-                                    <div className="d-flex flex-wrap gap-3">
-                                        <h6>
-                                            <strong>📅 Fecha:</strong>{" "}
-                                            {new Date(order.createdAt).toLocaleDateString("es-AR")}
-                                        </h6>
-                                        <h6>
-                                            <strong>💰 Total:</strong> $
-                                            {order.total?.toLocaleString("es-AR")}
-                                        </h6>
-                                        <h6>
-                                            <strong>👤 Cliente:</strong>{" "}
-                                            {order.usuario?.nombre || "N/A"}
-                                        </h6>
+                    {
+                        filteredOrders.length === 0 ? (
+                            <p className="alert alert-info">No hay órdenes que coincidan con la búsqueda.</p>
+                        ) : (
+                            filteredOrders.map((order) => (
+                                <div key={order._id} className="p-4 mb-4 rounded-4 border bg-white shadow-lg" style={{ transition: "0.25s", }}>
+                                    <div className="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h3 className="fw-bold mb-2">
+                                                Pedido #{order._id.toUpperCase()}
+                                            </h3>
+                                            <div className="d-flex flex-wrap gap-3">
+                                                <h6>
+                                                    <strong>📅 Fecha:</strong>{" "}
+                                                    {new Date(order.createdAt).toLocaleDateString("es-AR")}
+                                                </h6>
+                                                <h6>
+                                                    <strong>💰 Total:</strong> $
+                                                    {order.total?.toLocaleString("es-AR")}
+                                                </h6>
+                                                <h6>
+                                                    <strong>👤 Cliente:</strong>{" "}
+                                                    {order.usuario?.nombre || "N/A"}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <span className={`badge bg-${getEstadoBadge(order.estado)} fs-6`}>
+                                            {order.estado.toUpperCase()}
+                                        </span>
+                                    </div>
+
+                                    <hr />
+
+                                    <h5 className="fw-bold mb-3">Productos:</h5>
+                                    <div className="table-responsive">
+                                        <table className="table table-sm table-hover">
+                                            <thead className="table-light">
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th className="text-center">Cantidad</th>
+                                                    <th className="text-end">Precio</th>
+                                                    <th className="text-end">Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {order.productos?.map((p, index) => (
+                                                    <tr key={index}>
+                                                        <td>{p.nombre || p.titulo}</td>
+                                                        <td className="text-center">{p.cantidad}</td>
+                                                        <td className="text-end">
+                                                            ${p.precio?.toLocaleString("es-AR")}
+                                                        </td>
+                                                        <td className="text-end">
+                                                            ${(p.precio * p.cantidad).toLocaleString("es-AR")}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div className="mt-3 d-flex gap-2 justify-content-end flex-wrap">
+                                        {order.estado !== "entregado" &&
+                                            order.estado !== "cancelado" && (
+                                                <>
+                                                    {order.estado === "pendiente" && (
+                                                        <button className="btn btn-info btn-sm"
+                                                            onClick={() =>
+                                                                updateOrderStatus(order._id, "procesando")
+                                                            }>
+                                                            Procesar
+                                                        </button>
+                                                    )}
+                                                    {order.estado === "procesando" && (
+                                                        <button className="btn btn-primary btn-sm"
+                                                            onClick={() =>
+                                                                updateOrderStatus(order._id, "enviado")
+                                                            }>
+                                                            Enviar
+                                                        </button>
+                                                    )}
+                                                    {order.estado === "enviado" && (
+                                                        <button className="btn btn-success btn-sm" 
+                                                            onClick={() =>
+                                                                updateOrderStatus(order._id, "entregado")
+                                                            }>
+                                                            Marcar Entregado
+                                                        </button>
+                                                    )}
+                                                    <button className="btn btn-danger btn-sm" 
+                                                        onClick={() =>
+                                                            updateOrderStatus(order._id, "cancelado")
+                                                        }>
+                                                        Cancelar
+                                                    </button>
+                                                </>
+                                            )}
                                     </div>
                                 </div>
-                                <span className={`badge bg-${getEstadoBadge(order.estado)} fs-6`}>
-                                    {order.estado.toUpperCase()}
-                                </span>
-                            </div>
-
-                            <hr />
-
-                            <h5 className="fw-bold mb-3">Productos:</h5>
-                            <div className="table-responsive">
-                                <table className="table table-sm table-hover">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>Producto</th>
-                                            <th className="text-center">Cantidad</th>
-                                            <th className="text-end">Precio</th>
-                                            <th className="text-end">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {order.productos?.map((p, index) => (
-                                            <tr key={index}>
-                                                <td>{p.nombre || p.titulo}</td>
-                                                <td className="text-center">{p.cantidad}</td>
-                                                <td className="text-end">
-                                                    ${p.precio?.toLocaleString("es-AR")}
-                                                </td>
-                                                <td className="text-end">
-                                                    ${(p.precio * p.cantidad).toLocaleString("es-AR")}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div className="mt-3 d-flex gap-2 justify-content-end flex-wrap">
-                                {order.estado !== "entregado" &&
-                                    order.estado !== "cancelado" && (
-                                        <>
-                                            {order.estado === "pendiente" && (
-                                                <button className="btn btn-info btn-sm"
-                                                    onClick={() =>
-                                                        updateOrderStatus(order._id, "procesando")
-                                                    }>
-                                                    Procesar
-                                                </button>
-                                            )}
-                                            {order.estado === "procesando" && (
-                                                <button className="btn btn-primary btn-sm"
-                                                    onClick={() =>
-                                                        updateOrderStatus(order._id, "enviado")
-                                                    }>
-                                                    Enviar
-                                                </button>
-                                            )}
-                                            {order.estado === "enviado" && (
-                                                <button className="btn btn-success btn-sm" 
-                                                    onClick={() =>
-                                                        updateOrderStatus(order._id, "entregado")
-                                                    }>
-                                                    Marcar Entregado
-                                                </button>
-                                            )}
-                                            <button className="btn btn-danger btn-sm" 
-                                                onClick={() =>
-                                                    updateOrderStatus(order._id, "cancelado")
-                                                }>
-                                                Cancelar
-                                            </button>
-                                        </>
-                                    )}
-                            </div>
-                        </div>
-                    ))}
+                            ))
+                        )}
 
                     {/* Paginación */}
                     {totalPages > 1 && (
