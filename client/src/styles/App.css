@@ -37,7 +37,15 @@ header {
 .navbar-nav {
     margin-left: auto;
     display: flex;
-    gap: 32px;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (max-width: 1200px) {
+    .navbar-nav {
+        gap: 0.25rem;
+    }
 }
 
 .nav-link {
@@ -122,17 +130,21 @@ header{
 }
 
 .navbar-collapse {
-    width: 20%;
+    width: auto;
     background-color: #a0512d80;
     backdrop-filter: blur(5px);
     padding: 0.6rem;
-    justify-content: end;
+    justify-content: flex-end;
     border-radius: 8px;
+    max-width: calc(100% - 200px);
+    overflow-x: auto;
 }
 
 @media (max-width: 992px) {
     .navbar-collapse {
         text-align: center;
+        max-width: 100%;
+        margin-top: 1rem;
     }
 }
 
