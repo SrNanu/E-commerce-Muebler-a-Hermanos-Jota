@@ -69,4 +69,13 @@ const deleteProduct = async (req, res) => {
   }
 }
 
-module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct }
+const getFeaturedProducts = async (req, res) => {
+  try {
+    const productos = await Product.find({ destacado: true }).lean()
+    res.json(productos)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, getFeaturedProducts }

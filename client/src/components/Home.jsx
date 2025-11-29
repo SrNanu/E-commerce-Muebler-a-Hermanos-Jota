@@ -14,14 +14,13 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/productos`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/productos/destacados`)
       .then(res => res.json())
       .then(data => {
-        // Verificar que data sea un array
         if (Array.isArray(data)) {
-          // Filtrar solo productos destacados
-          const destacados = data.filter(p => p.destacado);
-          setFeaturedProducts(destacados);
+          setFeaturedProducts(data);
+        } else {
+          setFeaturedProducts([]);
         }
         setLoading(false);
       })
@@ -168,7 +167,7 @@ const Home = () => {
         ) : (
           <div className="row row-cols-1 row-cols-md-3 g-4">
             {featuredProducts.map(product => (
-              <div key={product.id} className="col">
+              <div key={getProductId(product)} className="col">
                 <div 
                   className="card h-100 shadow-sm border-0" 
                   style={{ 

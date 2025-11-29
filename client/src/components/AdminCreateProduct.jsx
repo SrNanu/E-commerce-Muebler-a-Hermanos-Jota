@@ -11,6 +11,7 @@ const AdminCreateProduct = () => {
     stock: '',
     categoria: '',
     imagenUrl: '',
+    destacado: false,
     atributos: []
   });
   const [atributoTemp, setAtributoTemp] = useState({ nombre: '', valor: '' });
@@ -67,6 +68,7 @@ const AdminCreateProduct = () => {
         stock: form.stock ? parseInt(form.stock) : 0,
         categoria: form.categoria.trim() || 'Sin categoría',
         imagenUrl: form.imagenUrl.trim(),
+        destacado: !!form.destacado,
         atributos: form.atributos
       };
 
@@ -81,6 +83,7 @@ const AdminCreateProduct = () => {
         stock: '',
         categoria: '',
         imagenUrl: '',
+        destacado: false,
         atributos: []
       });
 
@@ -201,6 +204,18 @@ const AdminCreateProduct = () => {
               </div>
             </div>
 
+            <div className="mb-3 form-check">
+              <input
+                type="checkbox"
+                id="destacado"
+                className="form-check-input"
+                checked={form.destacado}
+                onChange={(e) => setForm(prev => ({ ...prev, destacado: e.target.checked }))}
+                disabled={loading}
+              />
+              <label htmlFor="destacado" className="form-check-label fw-bold">Marcar como destacado</label>
+            </div>
+
             <div className="mb-3">
               <label className="form-label fw-bold">Atributos</label>
               <div className="input-group mb-2">
@@ -263,6 +278,7 @@ const AdminCreateProduct = () => {
                   stock: '',
                   categoria: '',
                   imagenUrl: '',
+                  destacado: false,
                   atributos: []
                 })}
                 disabled={loading}
