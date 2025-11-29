@@ -100,14 +100,29 @@ const getAllOrders = async (req, res) => {
       return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de administrador' });
     }
 
-    const orders = await Order.find()
+    const { estado, page = 1, limit = 10 } = req.query;
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 10)); // cap en 100
+
+    const filter = {};
+    if (estado) filter.estado = estado;
+
+    const totalCount = await Order.countDocuments(filter);
+    const orders = await Order.find(filter)
       .populate('usuario', 'nombre email')
-      .populate('productos.producto', 'nombre imagenUrl')
-      .sort({ createdAt: -1 });
+      .populate('productos.producto', 'nombre imagenUrl precio')
+      .sort({ createdAt: -1 })
+      .skip((pageNum - 1) * limitNum)
+      .limit(limitNum)
+      .lean();
+
+    const totalPages = Math.ceil(totalCount / limitNum);
 
     res.json({
       orders,
-      total: orders.length
+      totalCount,
+      totalPages,
+      page: pageNum,
     });
   } catch (error) {
     console.error('Error al obtener todos los pedidos:', error);
