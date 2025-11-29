@@ -16,6 +16,7 @@ import AdminCreateProduct from './components/AdminCreateProduct';
 import AdminEditProduct from './components/AdminEditProduct';
 import AdminProductList from './components/AdminProductList';
 import './styles/App.css';
+import OrdersPage from './components/OrdersPage';
 
 function App() {
   const { addToCart } = useCart();
@@ -62,6 +63,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/mis-pedidos"
+            element={
+              <ProtectedRoute>
+                <OrdersPage />
               </ProtectedRoute>
             }
           />

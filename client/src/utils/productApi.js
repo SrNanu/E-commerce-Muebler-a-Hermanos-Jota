@@ -131,3 +131,26 @@ export const deleteProduct = async (id) => {
     throw error;
   }
 };
+
+export const getMisPedidos = async () => {
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders/mis-pedidos`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Error ${response.status}: No se pudo obtener los pedidos`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    throw error;
+  }
+};
