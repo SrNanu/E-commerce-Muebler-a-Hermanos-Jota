@@ -16,8 +16,10 @@ import AdminCreateProduct from './components/AdminCreateProduct';
 import AdminUsers from './components/AdminUsers';
 import AdminEditProduct from './components/AdminEditProduct';
 import AdminProductList from './components/AdminProductList';
-import './styles/App.css';
 import OrdersPage from './components/OrdersPage';
+import AdminOrdersPage from './components/AdminOrdersPage';
+import './styles/App.css';
+
 
 function App() {
   const { addToCart } = useCart();
@@ -56,17 +58,6 @@ function App() {
             }
           />
           <Route path="/carrito" element={<Cart />} />
-          {/* Administración de usuarios (solo admin) */}
-          <Route
-            path="/admin/usuarios"
-            element={
-              <ProtectedRoute requireAdmin>
-                <div className="container py-4">
-                  <AdminUsers />
-                </div>
-              </ProtectedRoute>
-            }
-          />
 
           {/* Rutas protegidas */}
           <Route
@@ -98,6 +89,18 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/admin/usuarios"
+            element={
+              <ProtectedRoute requireAdmin>
+                <div className="container py-4">
+                  <AdminUsers />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/admin/crear-producto"
             element={
@@ -114,6 +117,17 @@ function App() {
               <ProtectedRoute requireAdmin={true}>
                 <div className="container py-4">
                   <AdminEditProduct />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/admin/ordenes"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <div className="container py-4"> 
+                  <AdminOrdersPage />
                 </div>
               </ProtectedRoute>
             }

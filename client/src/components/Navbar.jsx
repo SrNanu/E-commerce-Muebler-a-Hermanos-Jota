@@ -162,6 +162,19 @@ const Navbar = () => {
                     Usuarios
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link px-3 py-2 rounded-3 fw-semibold"
+                    to="/admin/ordenes"
+                    style={{ 
+                      transition: 'all 0.3s ease',
+                      color: 'rgba(255, 255, 255, 0.9)'
+                    }}
+                  >
+                    <i className="bi bi-receipt me-1"></i>
+                    Órdenes
+                  </Link>
+                </li>
               </>
             )}
           </ul>
