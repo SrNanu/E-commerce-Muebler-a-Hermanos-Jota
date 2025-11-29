@@ -46,7 +46,7 @@ const Cart = () => {
 
       // Redirigir después de 2 segundos
       setTimeout(() => {
-        navigate('/');
+        navigate('/mis-pedidos');
       }, 2000);
     } catch (err) {
       console.error('Error al finalizar compra:', err);
