@@ -121,6 +121,7 @@ const AdminProductList = () => {
                 <th width="100">Precio</th>
                 <th width="80">Stock</th>
                 <th width="120">Categoría</th>
+                <th width="120">Destacado</th>
                 <th width="150">Acciones</th>
               </tr>
             </thead>
@@ -159,6 +160,18 @@ const AdminProductList = () => {
                     </td>
                     <td>
                       <small className="text-muted">{product.categoria || '—'}</small>
+                    </td>
+                    <td>
+                      {product.destacado ? (
+                        <span 
+                          className="badge"
+                          style={{ backgroundColor: '#D4A437' }}
+                        >
+                          Sí
+                        </span>
+                      ) : (
+                        <span className="badge bg-secondary">No</span>
+                      )}
                     </td>
                     <td>
                       <div className="btn-group btn-group-sm">
