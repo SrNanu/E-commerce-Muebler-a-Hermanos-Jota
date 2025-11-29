@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const AdminUsers = () => {
   const { token, user } = useAuth();
@@ -9,36 +9,33 @@ const AdminUsers = () => {
   const [updatingId, setUpdatingId] = useState(null);
   const [message, setMessage] = useState(null);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // 📌 Busqueda y filtro por roles
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState(null); // user | admin | null
+
+  useEffect(() => { fetchUsers(); }, []);
 
   const fetchUsers = async () => {
     setLoading(true);
-    setError(null);
-    const remote = import.meta.env.VITE_API_BASE_URL;
-    const local = 'http://localhost:4000';
-    const tryBases = remote && remote !== local ? [remote, local] : [local];
+    const bases = [
+      import.meta.env.VITE_API_BASE_URL,
+      "http://localhost:4000",
+    ].filter(Boolean);
+
     try {
-      let lastErr = null;
-      for (const base of tryBases) {
-        try {
-          const res = await fetch(`${base}/api/auth/users`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+      for (const base of bases) {
+        const res = await fetch(`${base}/api/auth/users`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (res.ok) {
           setUsers(data.users);
-          setMessage(null);
-          return;
-        } catch (e) {
-          lastErr = e;
+          return setLoading(false);
         }
       }
-      throw lastErr || new Error('No se pudo obtener usuarios');
+      throw new Error("No se pudo conectar al servidor");
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -46,90 +43,122 @@ const AdminUsers = () => {
   const handleChangeRole = async (id, newRole) => {
     setUpdatingId(id);
     setMessage(null);
-    const remote = import.meta.env.VITE_API_BASE_URL;
-    const local = 'http://localhost:4000';
-    const tryBases = remote && remote !== local ? [remote, local] : [local];
+
+    const bases = [
+      import.meta.env.VITE_API_BASE_URL,
+      "http://localhost:4000",
+    ].filter(Boolean);
+
     try {
-      let lastErr = null;
-      for (const base of tryBases) {
-        try {
-          const res = await fetch(`${base}/api/auth/users/${id}/role`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ role: newRole })
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
-          setMessage(`Rol actualizado: ${data.user.email} -> ${data.user.role}`);
-          setUsers(users.map(u => u._id === id ? { ...u, role: data.user.role } : u));
-          return;
-        } catch (e) {
-          lastErr = e;
+      for (const base of bases) {
+        const res = await fetch(`${base}/api/auth/users/${id}/role`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ role: newRole }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          setMessage(`Rol actualizado: ${data.user.email} → ${data.user.role}`);
+          setUsers(users.map(u => u._id === id ? {...u, role: data.user.role} : u));
+          return setUpdatingId(null);
         }
       }
-      throw lastErr || new Error('No se pudo actualizar el rol');
+      throw new Error("No se pudo actualizar");
     } catch (err) {
       setError(err.message);
-    } finally {
       setUpdatingId(null);
     }
   };
 
-  if (!user || user.role !== 'admin') {
+  // FILTRADO DINÁMICO 
+  const filtered = users.filter(u => {
+    const matchSearch =
+      u.nombre.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase());
+
+    const matchRole = roleFilter ? u.role === roleFilter : true;
+    return matchSearch && matchRole;
+  });
+
+  if (!user || user.role !== "admin")
     return <div className="container py-5"><div className="alert alert-danger">Acceso denegado</div></div>;
-  }
 
   return (
     <div className="container py-4">
       <h2 className="mb-3">Administración de Usuarios</h2>
-      <p className="text-muted">Cambia roles entre <code>user</code> y <code>admin</code>. Solo admins pueden ver esto.</p>
-      {message && <div className="alert alert-success py-2">{message}</div>}
-      {error && <div className="alert alert-danger py-2">{error}</div>}
-      {loading ? (
-        <div className="text-center py-5">
-          <div className="spinner-border" role="status"><span className="visually-hidden">Cargando...</span></div>
-        </div>
-      ) : (
-        <div className="table-responsive">
-          <table className="table table-sm align-middle">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(u => (
-                <tr key={u._id}>
-                  <td>{u.nombre}</td>
-                  <td>{u.email}</td>
-                  <td>
-                    <span className={`badge ${u.role === 'admin' ? 'bg-success' : 'bg-secondary'}`}>{u.role}</span>
-                  </td>
-                  <td>
-                    <div className="d-flex gap-2">
-                      <select
-                        className="form-select form-select-sm"
-                        disabled={updatingId === u._id}
-                        value={u.role}
-                        onChange={(e) => handleChangeRole(u._id, e.target.value)}
-                      >
-                        <option value="user">user</option>
-                        <option value="admin">admin</option>
-                      </select>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+
+      {message && <div className="alert alert-success">{message}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      <div className="d-flex gap-3 mb-3 align-items-center flex-wrap">
+
+        <input
+          type="text"
+          placeholder="Buscar por nombre o email..."
+          className="form-control w-auto"
+          style={{ minWidth: "260px" }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <button
+          className={`btn ${roleFilter===null?"btn-dark": "btn-outline-dark"}`}
+          onClick={() => setRoleFilter(null)}
+        >Todos</button>
+
+        <button
+          className={`btn ${roleFilter==="user"?"btn-primary": "btn-outline-primary"}`}
+          onClick={() => setRoleFilter("user")}
+        >User</button>
+
+        <button
+          className={`btn ${roleFilter==="admin"?"btn-warning": "btn-outline-warning"}`}
+          onClick={() => setRoleFilter("admin")}
+        >Admin</button>
+
+      </div>
+
+      {loading && <div>Cargando usuarios...</div>}
+      <table className="table table-modern text-center align-middle">
+        <thead>
+          <tr>
+            <th>Nombre</th><th>Email</th><th>Rol</th><th>Acción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {filtered.length > 0 ? (
+          filtered.map(u => (
+            <tr key={u._id}>
+              <td>{u.nombre}</td>
+              <td>{u.email}</td>
+              <td>
+                <span className={`role-badge ${u.role==="admin"?"role-admin":"role-user"}`}>
+                  {u.role}
+                </span>
+              </td>
+              <td>
+                <select
+                  value={u.role}
+                  onChange={(e)=>handleChangeRole(u._id,e.target.value)}
+                  disabled={updatingId===u._id}
+                  className="form-select w-auto mx-auto"
+                >
+                  <option value="user">Usuario</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </td>
+            </tr>
+          ))
+        ):(
+          <tr><td colSpan="4" className="text-muted">No se encontraron usuarios.</td></tr>
+        )}
+        </tbody>
+      </table>
     </div>
   );
 };
