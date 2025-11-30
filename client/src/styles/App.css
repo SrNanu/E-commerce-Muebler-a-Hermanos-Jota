@@ -1,51 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap');
 
-/* Header Moderno */
-header {
-    width: 100%;
-    background: #DABAA0;
-    margin-bottom: 24px;
-    padding-top: 0;
-    padding-bottom: 0;
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 100;
+:root {
+  --primary-color: #8B4513;
+  --primary-dark: #6B3410;
+  --primary-light: #D2691E;
+  --accent-color: #DAA520;
+  --accent-light: #FFD700;
+  --text-dark: #2C2C2C;
+  --text-medium: #4a4a4a;
+  --text-light: #7a7a7a;
+  --background: #FAFAFA;
+  --card-bg: #FFFFFF;
+  --border-light: #E5E5E5;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navbar {
-    background: var(--color-alabastro-calido) !important;
-    box-shadow: 0 4px 16px rgba(160, 82, 45, 0.12);
-    border-radius: 0 0 18px 18px;
-    padding: 8px 32px;
-    min-height: 70px;
-    display: flex;
-    align-items: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.navbar-brand {
-    font-family: var(--font-secondary);
-    font-size: 2rem;
-    font-weight: var(--weight-bold);
-    color: #6B2E13 !important;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-.navbar-nav {
-    margin-left: auto;
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-@media (max-width: 1200px) {
-    .navbar-nav {
-        gap: 0.25rem;
-    }
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-link {
