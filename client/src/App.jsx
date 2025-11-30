@@ -18,6 +18,7 @@ import AdminEditProduct from './components/AdminEditProduct';
 import AdminProductList from './components/AdminProductList';
 import OrdersPage from './components/OrdersPage';
 import AdminOrdersPage from './components/AdminOrdersPage';
+import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 
 
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ScrollToTop />
       <Navbar />
       <main className="py-0">
         <Routes>
