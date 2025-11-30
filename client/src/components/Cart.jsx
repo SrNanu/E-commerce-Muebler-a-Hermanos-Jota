@@ -78,7 +78,7 @@ const Cart = () => {
                 <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '5rem' }}></i>
               </div>
               <h2 className="mb-4">¡Pedido realizado con éxito!</h2>
-              <p className="text-muted mb-4">Te redirigiremos a la página principal...</p>
+              <p className="text-muted mb-4">Te redirigiremos a ver tus pedidos...</p>
             </div>
           </div>
         </div>
