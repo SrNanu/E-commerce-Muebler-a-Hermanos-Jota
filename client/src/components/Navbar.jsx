@@ -65,12 +65,26 @@ const Navbar = () => {
             </Link>
           </li>
           {user?.role === 'admin' && (
-            <li>
-              <Link to="/admin/productos" className="nav-link-modern">
-                <i className="bi bi-box-seam"></i>
-                Admin
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/admin/productos" className="nav-link-modern">
+                  <i className="bi bi-box-seam"></i>
+                  Productos
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/usuarios" className="nav-link-modern">
+                  <i className="bi bi-people"></i>
+                  Usuarios
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/ordenes" className="nav-link-modern">
+                  <i className="bi bi-receipt"></i>
+                  Pedidos
+                </Link>
+              </li>
+            </>
           )}
         </ul>
 
