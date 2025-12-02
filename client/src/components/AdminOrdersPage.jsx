@@ -85,6 +85,17 @@ const AdminOrdersPage = () => {
         }
     }
 
+    const getEstadoBadge = (estado) => {
+        const estilos = {
+            pendiente: "warning",
+            procesando: "info",
+            enviado: "primary",
+            entregado: "success",
+            cancelado: "danger",
+        }
+        return estilos[estado] || "secondary"
+    }
+
     const filteredOrders = orders.filter(order =>
         (order._id || "").toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -118,6 +129,7 @@ const AdminOrdersPage = () => {
                                 <option value="procesando">Procesando</option>
                                 <option value="enviado">Enviado</option>
                                 <option value="entregado">Entregado</option>
+                                <option value="cancelado">Cancelado</option>
                                 <option value="">Todas</option>
                             </select>
                         </div>
@@ -181,6 +193,7 @@ const AdminOrdersPage = () => {
                                         <div>
                                             <div className="list-title">Pedido #{(order.numero || order._id).toString().toUpperCase()}</div>
                                             <div className="list-subtitle">Cliente: {order.usuario?.nombre || 'N/A'}</div>
+                                            <div className="list-subtitle">Estado: <span className={`badge bg-${getEstadoBadge(order.estado)}`}>{order.estado}</span></div>
                                         </div>
                                         <div className="list-meta">Fecha: {order.createdAt ? new Date(order.createdAt).toLocaleDateString('es-AR') : '—'}</div>
                                         <div className="list-meta">Total: ${Number(order.total || 0).toLocaleString('es-AR')}</div>
