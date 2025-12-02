@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getProductId, getProductImageSrc, getProductTitle, getProductText, getProductPrice } from '../utils/productView';
 import '../styles/ProductCard.css';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, adminMode = false, editLink, onDelete, deleteDisabled = false }) => {
   if (!product) {
     return null;
   }
@@ -24,10 +24,28 @@ const ProductCard = ({ product }) => {
           <span className="product-card-badge">Destacado</span>
         )}
         <div className="product-card-overlay">
-          <Link to={`/productos/${id}`} className="product-card-quick-view">
-            Vista Rápida
-            <i className="bi bi-eye"></i>
-          </Link>
+          {!adminMode && (
+            <Link to={`/productos/${id}`} className="product-card-quick-view">
+              Vista Rápida
+              <i className="bi bi-eye"></i>
+            </Link>
+          )}
+          {adminMode && (
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginTop: '0.75rem' }}>
+              {editLink && (
+                <Link to={editLink} className="product-card-btn">
+                  Editar
+                  <i className="bi bi-pencil"></i>
+                </Link>
+              )}
+              {onDelete && (
+                <button className="product-card-btn" onClick={onDelete} disabled={deleteDisabled}>
+                  {deleteDisabled ? 'Eliminando…' : 'Eliminar'}
+                  <i className="bi bi-trash"></i>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
       
@@ -50,10 +68,12 @@ const ProductCard = ({ product }) => {
               ${precio.toLocaleString('es-AR')}
             </h4>
           )}
-          <Link to={`/productos/${id}`} className="product-card-btn">
-            Ver más
-            <i className="bi bi-arrow-right"></i>
-          </Link>
+          {!adminMode && (
+            <Link to={`/productos/${id}`} className="product-card-btn">
+              Ver más
+              <i className="bi bi-arrow-right"></i>
+            </Link>
+          )}
         </div>
       </div>
     </div>

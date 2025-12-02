@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useAuth } from "../context/AuthContext"
+import OrderCard from "./OrderCard"
+import "../styles/ProductList.css"
+import "../styles/ProductCard.css"
 
 const AdminOrdersPage = () => {
     const { token } = useAuth()
@@ -13,54 +16,47 @@ const AdminOrdersPage = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
     const [searchQuery, setSearchQuery] = useState("")
-    const API_ORDENES_URL = `${import.meta.env.VITE_API_BASE_URL}/api/orders/admin/all`
+    const API_BASE = import.meta.env.VITE_API_BASE_URL
+    const API_ORDENES_LIST = `${API_BASE}/api/orders/admin/all`
 
     useEffect(() => {
-        // cuando cambia filtro, volver a la página 1
         setCurrentPage(1)
     }, [estadoFiltro, ordenFecha])
 
     useEffect(() => {
-        getOrdenes()
-    }, [estadoFiltro, currentPage, ordenFecha])
+        const getOrdenes = async () => {
+            try {
+                setLoading(true)
+                const params = new URLSearchParams()
+                if (estadoFiltro) params.append("estado", estadoFiltro)
+                params.append("page", currentPage)
+                params.append("limit", ordersPerPage)
+                params.append("sort", ordenFecha === "reciente" ? "-createdAt" : "createdAt")
 
-    const getOrdenes = async () => {
-        try {
-            setLoading(true)
-            const params = new URLSearchParams()
-            if (estadoFiltro) params.append("estado", estadoFiltro)
-            params.append("page", currentPage)
-            params.append("limit", ordersPerPage)
-            params.append(
-                "sort",
-                ordenFecha === "reciente" ? "-createdAt" : "createdAt"
-            )
+                const response = await fetch(`${API_ORDENES_LIST}?${params.toString()}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                })
 
-            const response = await fetch(`${API_ORDENES_URL}?${params.toString()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+                if (!response.ok) throw new Error("Error al cargar las órdenes")
 
-            if (!response.ok) {
-                throw new Error("Error al cargar las órdenes")
+                const data = await response.json()
+                setOrders(data.orders || [])
+                setTotalPages(data.totalPages || 1)
+                setError(null)
+            } catch (err) {
+                console.error("Error:", err)
+                setError(err.message)
+            } finally {
+                setLoading(false)
             }
-
-            const data = await response.json()
-            setOrders(data.orders || [])
-            setTotalPages(data.totalPages || 1)
-            setError(null)
-        } catch (err) {
-            console.error("Error:", err)
-            setError(err.message)
-        } finally {
-            setLoading(false)
         }
-    }
+
+        getOrdenes()
+    }, [estadoFiltro, currentPage, ordenFecha, token])
 
     const updateOrderStatus = async (orderId, nuevoEstado) => {
         try {
-            const res = await fetch(`${API_ORDENES_URL}${orderId}/status`, {
+            const res = await fetch(`${API_BASE}/api/orders/admin/${orderId}/status`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,276 +67,162 @@ const AdminOrdersPage = () => {
 
             if (!res.ok) throw new Error("Error al actualizar el estado")
 
-            // refrescar página actual para mantener orden consistente
-            getOrdenes()
+            // refrescar página actual
+            const params = new URLSearchParams()
+            if (estadoFiltro) params.append("estado", estadoFiltro)
+            params.append("page", currentPage)
+            params.append("limit", ordersPerPage)
+            params.append("sort", ordenFecha === "reciente" ? "-createdAt" : "createdAt")
+            const response = await fetch(`${API_ORDENES_LIST}?${params.toString()}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            const data = await response.json()
+            setOrders(data.orders || [])
+            setTotalPages(data.totalPages || 1)
         } catch (err) {
             console.error(err)
             alert("Error al actualizar el estado")
         }
     }
 
-    const getEstadoBadge = (estado) => {
-        const estilos = {
-            pendiente: "warning",
-            procesando: "info",
-            enviado: "primary",
-            entregado: "success",
-            cancelado: "danger",
-        }
-        return estilos[estado] || "secondary"
-    }
-
-    const toggleOrdenFecha = () => {
-        setOrdenFecha(ordenFecha === "reciente" ? "antiguo" : "reciente")
-    }
-
     const filteredOrders = orders.filter(order =>
-        order._id.toLowerCase().includes(searchQuery.toLowerCase())
+        (order._id || "").toLowerCase().includes(searchQuery.toLowerCase())
     )
-
     return (
-        <div className="container my-5">
-            <h2 className="fw-bold mb-4">📦 Gestión de Órdenes</h2>
-
-            {error && (
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    {error}
-                    <button
-                        type="button"
-                        className="btn-close"
-                        onClick={() => setError(null)}
-                    ></button>
-                </div>
-            )}
-
-            {/* Filtros */}
-            <div className="mb-4">
-                <div className="d-flex gap-2 flex-wrap mb-3">
-                    <button
-                        className={`btn ${estadoFiltro === "pendiente" ? "btn-warning" : "btn-outline-warning"}`}
-                        onClick={() => setEstadoFiltro("pendiente")}
-                    >
-                        Pendientes
-                    </button>
-                    <button
-                        className={`btn ${estadoFiltro === "procesando" ? "btn-info" : "btn-outline-info"}`}
-                        onClick={() => setEstadoFiltro("procesando")}
-                    >
-                        Procesando
-                    </button>
-                    <button
-                        className={`btn ${estadoFiltro === "enviado" ? "btn-primary" : "btn-outline-primary"}`}
-                        onClick={() => setEstadoFiltro("enviado")}
-                    >
-                        Enviados
-                    </button>
-                    <button 
-                        className={`btn ${estadoFiltro === "entregado" ? "btn-success" : "btn-outline-success"}`}
-                        onClick={() => setEstadoFiltro("entregado")}
-                    >
-                        Entregados
-                    </button>
-                    <button className={`btn ${estadoFiltro === "" ? "btn-secondary" : "btn-outline-secondary"}`} onClick={() => setEstadoFiltro("")}>
-                        Todas
-                    </button>
-
-                </div>
-
-                {/* Búsqueda */}
-                <div className="d-flex gap-2 my-2">
-                    <input
-                        className="form-control"
-                        type="text"
-                        placeholder="Buscar por ID de pedido"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-
-                    <button
-                        className="btn btn-dark"
-                        onClick={() => setSearchQuery(searchTerm)}
-                    >
-                        Buscar
-                    </button>
-
-                    <button
-                        className="btn btn-secondary"
-                        onClick={() => {
-                            setSearchTerm("");
-                            setSearchQuery("");
-                        }}
-                    >
-                        Limpiar
-                    </button>
-                </div>
-
-                {/* Ordenamiento */}
-                <div className="d-flex gap-2 align-items-center">
-                    <span className="fw-bold">Ordenar por fecha:</span>
-                    <button className="btn btn-sm btn-dark" onClick={toggleOrdenFecha} title={ 
-                            ordenFecha === "reciente" ? "Ordenar por más antiguo" : "Ordenar por más reciente"
-                        }
-                    >
-                        {ordenFecha === "reciente" ? (
-                            <>
-                                <i className="bi bi-sort-up me-1"></i>
-                                Más Antiguo
-                            </>
-                        ) : (
-                            <>
-                                <i className="bi bi-sort-down me-1"></i>
-                                Más Reciente
-                            </>
-                        )}
-                    </button>
-                </div>
+        <div className="product-list-container">
+            <div className="product-list-header">
+                <h1 className="product-list-title">Gestión de Órdenes</h1>
+                <p className="product-list-subtitle">Administrador de órdenes</p>
             </div>
 
-            {loading && (
-                <div className="text-center my-5">
-                    <div className="spinner-border" role="status"></div>
-                    <p className="mt-2">Cargando órdenes...</p>
+            {error && (
+                <div className="product-list-content" style={{ paddingTop: 0 }}>
+                    <div className="no-results" style={{ paddingTop: 0 }}>
+                        <div className="no-results-icon">⚠️</div>
+                        <h2 className="no-results-title">{error}</h2>
+                        <button className="no-results-btn" onClick={() => setError(null)}>
+                            Ocultar <i className="bi bi-x-circle"></i>
+                        </button>
+                    </div>
                 </div>
             )}
 
-            {!loading && orders.length === 0 && (
-                <p className="alert alert-info">No hay órdenes con este estado.</p>
-            )}
+            <div className="product-list-content">
+                <div className="product-list-filters">
+                    <div className="filters-row">
+                        <div className="filter-group" style={{ maxWidth: '220px' }}>
+                            <label className="filter-label">Estado</label>
+                            <select className="filter-select" value={estadoFiltro}
+                                onChange={(e) => setEstadoFiltro(e.target.value)}>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="procesando">Procesando</option>
+                                <option value="enviado">Enviado</option>
+                                <option value="entregado">Entregado</option>
+                                <option value="">Todas</option>
+                            </select>
+                        </div>
 
-            {!loading && orders.length > 0 && (
-                <div>
-                    {
-                        filteredOrders.length === 0 ? (
-                            <p className="alert alert-info">No hay órdenes que coincidan con la búsqueda.</p>
+                        <div className="filter-group" style={{ maxWidth: '220px' }}>
+                            <label className="filter-label">Fecha</label>
+                            <select className="filter-select" value={ordenFecha}
+                                onChange={(e) => setOrdenFecha(e.target.value)}>
+                                <option value="reciente">Más reciente</option>
+                                <option value="antiguo">Más antiguo</option>
+                            </select>
+                        </div>
+
+                        <div className="filter-group">
+                            <label className="filter-label">Buscar por ID</label>
+                            <input type="text" className="filter-input" placeholder="Ej: 65F…"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); setSearchQuery(searchTerm); } }}
+                            />
+                        </div>
+
+                        <button className="filter-btn" onClick={() => setSearchQuery(searchTerm)}>
+                            <i className="bi bi-search"></i>
+                            Buscar
+                        </button>
+
+                        {(searchQuery || estadoFiltro || ordenFecha) && (
+                            <button className="filter-btn filter-btn-clear" onClick={() => { setSearchTerm(''); setSearchQuery(''); setEstadoFiltro('pendiente'); setOrdenFecha('antiguo'); }}>
+                                <i className="bi bi-x-circle"></i>
+                                Limpiar
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {loading ? (
+                    <div className="loading-spinner-container">
+                        <div className="loading-spinner"></div>
+                    </div>
+                ) : (
+                    <>
+                        <div className="product-list-results">
+                            <span className="results-count">Mostrando <strong>{filteredOrders.length}</strong> de <strong>{orders.length}</strong> órdenes</span>
+                        </div>
+
+                        {filteredOrders.length === 0 ? (
+                            <div className="no-results">
+                                <div className="no-results-icon">📭</div>
+                                <h2 className="no-results-title">No hay órdenes para los filtros aplicados</h2>
+                                <p className="no-results-text">Ajusta el estado, fecha o búsqueda</p>
+                                <button className="no-results-btn" onClick={() => { setSearchTerm(''); setSearchQuery(''); setEstadoFiltro('pendiente'); setOrdenFecha('antiguo'); }}>
+                                    <i className="bi bi-arrow-counterclockwise"></i>
+                                    Limpiar filtros
+                                </button>
+                            </div>
                         ) : (
-                            filteredOrders.map((order) => (
-                                <div key={order._id} className="p-4 mb-4 rounded-4 border bg-white shadow-lg" style={{ transition: "0.25s", }}>
-                                    <div className="d-flex justify-content-between align-items-start mb-3">
+                            <div className="list-container">
+                                {filteredOrders.map((order) => (
+                                    <div className="list-row" key={order._id}>
                                         <div>
-                                            <h3 className="fw-bold mb-2">
-                                                Pedido #{order._id.toUpperCase()}
-                                            </h3>
-                                            <div className="d-flex flex-wrap gap-3">
-                                                <h6>
-                                                    <strong>📅 Fecha:</strong>{" "}
-                                                    {new Date(order.createdAt).toLocaleDateString("es-AR")}
-                                                </h6>
-                                                <h6>
-                                                    <strong>💰 Total:</strong> $
-                                                    {order.total?.toLocaleString("es-AR")}
-                                                </h6>
-                                                <h6>
-                                                    <strong>👤 Cliente:</strong>{" "}
-                                                    {order.usuario?.nombre || "N/A"}
-                                                </h6>
-                                            </div>
+                                            <div className="list-title">Pedido #{(order.numero || order._id).toString().toUpperCase()}</div>
+                                            <div className="list-subtitle">Cliente: {order.usuario?.nombre || 'N/A'}</div>
                                         </div>
-                                        <span className={`badge bg-${getEstadoBadge(order.estado)} fs-6`}>
-                                            {order.estado.toUpperCase()}
-                                        </span>
-                                    </div>
-
-                                    <hr />
-
-                                    <h5 className="fw-bold mb-3">Productos:</h5>
-                                    <div className="table-responsive">
-                                        <table className="table table-sm table-hover">
-                                            <thead className="table-light">
-                                                <tr>
-                                                    <th>Producto</th>
-                                                    <th className="text-center">Cantidad</th>
-                                                    <th className="text-end">Precio</th>
-                                                    <th className="text-end">Subtotal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {order.productos?.map((p, index) => (
-                                                    <tr key={index}>
-                                                        <td>{p.nombre || p.titulo}</td>
-                                                        <td className="text-center">{p.cantidad}</td>
-                                                        <td className="text-end">
-                                                            ${p.precio?.toLocaleString("es-AR")}
-                                                        </td>
-                                                        <td className="text-end">
-                                                            ${(p.precio * p.cantidad).toLocaleString("es-AR")}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div className="mt-3 d-flex gap-2 justify-content-end flex-wrap">
-                                        {order.estado !== "entregado" &&
-                                            order.estado !== "cancelado" && (
-                                                <>
-                                                    {order.estado === "pendiente" && (
-                                                        <button className="btn btn-info btn-sm"
-                                                            onClick={() =>
-                                                                updateOrderStatus(order._id, "procesando")
-                                                            }>
-                                                            Procesar
-                                                        </button>
-                                                    )}
-                                                    {order.estado === "procesando" && (
-                                                        <button className="btn btn-primary btn-sm"
-                                                            onClick={() =>
-                                                                updateOrderStatus(order._id, "enviado")
-                                                            }>
-                                                            Enviar
-                                                        </button>
-                                                    )}
-                                                    {order.estado === "enviado" && (
-                                                        <button className="btn btn-success btn-sm" 
-                                                            onClick={() =>
-                                                                updateOrderStatus(order._id, "entregado")
-                                                            }>
-                                                            Marcar Entregado
-                                                        </button>
-                                                    )}
-                                                    <button className="btn btn-danger btn-sm" 
-                                                        onClick={() =>
-                                                            updateOrderStatus(order._id, "cancelado")
-                                                        }>
-                                                        Cancelar
-                                                    </button>
-                                                </>
+                                        <div className="list-meta">Fecha: {order.createdAt ? new Date(order.createdAt).toLocaleDateString('es-AR') : '—'}</div>
+                                        <div className="list-meta">Total: ${Number(order.total || 0).toLocaleString('es-AR')}</div>
+                                        <div className="list-actions">
+                                            {order.estado === 'pendiente' && (
+                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'procesando')}>Procesar<i className="bi bi-gear"></i></button>
                                             )}
+                                            {order.estado === 'procesando' && (
+                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'enviado')}>Enviar<i className="bi bi-truck"></i></button>
+                                            )}
+                                            {order.estado === 'enviado' && (
+                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'entregado')}>Entregar<i className="bi bi-check2-circle"></i></button>
+                                            )}
+                                            {order.estado !== 'cancelado' && order.estado !== 'entregado' && (
+                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'cancelado')}>Cancelar<i className="bi bi-x-circle"></i></button>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))
+                                ))}
+                            </div>
                         )}
 
-                    {/* Paginación */}
-                    {totalPages > 1 && (
-                        <nav aria-label="Paginación" className="mt-4">
-                            <ul className="pagination justify-content-center">
-                                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>
-                                        Anterior
-                                    </button>
-                                </li>
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                                    (page) => (
-                                        <li key={page} className={`page-item ${currentPage === page ? "active" : ""}`}>
-                                            <button
-                                                className="page-link"
-                                                onClick={() => setCurrentPage(page)}>
-                                                {page}
-                                            </button>
+                        {totalPages > 1 && (
+                            <div className="pagination-container">
+                                <ul className="pagination">
+                                    <li>
+                                        <button className="pagination-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Anterior</button>
+                                    </li>
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                        <li key={page}>
+                                            <button className={`pagination-btn ${currentPage === page ? 'active' : ''}`} onClick={() => setCurrentPage(page)}>{page}</button>
                                         </li>
-                                    )
-                                )}
-                                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-                                    <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)}>
-                                        Siguiente
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-                    )}
-                </div>
-            )}
+                                    ))}
+                                    <li>
+                                        <button className="pagination-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Siguiente</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     )
 }

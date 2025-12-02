@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import UserCard from "./UserCard";
+import "../styles/ProductList.css";
+import "../styles/ProductCard.css";
 
 const AdminUsers = () => {
   const { token, user } = useAuth();
@@ -10,6 +13,7 @@ const AdminUsers = () => {
   const [message, setMessage] = useState(null);
 
   // 📌 Busqueda y filtro por roles
+  const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState(null); // user | admin | null
 
@@ -76,89 +80,148 @@ const AdminUsers = () => {
 
   // FILTRADO DINÁMICO 
   const filtered = users.filter(u => {
+    const q = search.trim().toLowerCase();
     const matchSearch =
-      u.nombre.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase());
+      (u.nombre || "").toLowerCase().includes(q) ||
+      (u.email || "").toLowerCase().includes(q);
 
     const matchRole = roleFilter ? u.role === roleFilter : true;
     return matchSearch && matchRole;
   });
 
-  if (!user || user.role !== "admin")
-    return <div className="container py-5"><div className="alert alert-danger">Acceso denegado</div></div>;
+  if (!user || user.role !== "admin") {
+    return (
+      <div className="product-list-container">
+        <div className="no-results">
+          <div className="no-results-icon">⛔</div>
+          <h2 className="no-results-title">Acceso denegado</h2>
+          <p className="no-results-text">Debes ser administrador para ver esta sección.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container py-4">
-      <h2 className="mb-3">Administración de Usuarios</h2>
-
-      {message && <div className="alert alert-success">{message}</div>}
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <div className="d-flex gap-3 mb-3 align-items-center flex-wrap">
-
-        <input
-          type="text"
-          placeholder="Buscar por nombre o email..."
-          className="form-control w-auto"
-          style={{ minWidth: "260px" }}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <button
-          className={`btn ${roleFilter===null?"btn-dark": "btn-outline-dark"}`}
-          onClick={() => setRoleFilter(null)}
-        >Todos</button>
-
-        <button
-          className={`btn ${roleFilter==="user"?"btn-primary": "btn-outline-primary"}`}
-          onClick={() => setRoleFilter("user")}
-        >User</button>
-
-        <button
-          className={`btn ${roleFilter==="admin"?"btn-warning": "btn-outline-warning"}`}
-          onClick={() => setRoleFilter("admin")}
-        >Admin</button>
-
+    <div className="product-list-container">
+      <div className="product-list-header">
+        <h1 className="product-list-title">Gestión de Usuarios</h1>
+        <p className="product-list-subtitle">Administrador de usuarios</p>
       </div>
 
-      {loading && <div>Cargando usuarios...</div>}
-      <table className="table table-modern text-center align-middle">
-        <thead>
-          <tr>
-            <th>Nombre</th><th>Email</th><th>Rol</th><th>Acción</th>
-          </tr>
-        </thead>
+      {message && (
+        <div className="product-list-content" style={{ paddingTop: 0 }}>
+          <div className="no-results" style={{ paddingTop: 0 }}>
+            <div className="no-results-icon">✅</div>
+            <h2 className="no-results-title">{message}</h2>
+          </div>
+        </div>
+      )}
 
-        <tbody>
-        {filtered.length > 0 ? (
-          filtered.map(u => (
-            <tr key={u._id}>
-              <td>{u.nombre}</td>
-              <td>{u.email}</td>
-              <td>
-                <span className={`role-badge ${u.role==="admin"?"role-admin":"role-user"}`}>
-                  {u.role}
-                </span>
-              </td>
-              <td>
-                <select
-                  value={u.role}
-                  onChange={(e)=>handleChangeRole(u._id,e.target.value)}
-                  disabled={updatingId===u._id}
-                  className="form-select w-auto mx-auto"
-                >
-                  <option value="user">Usuario</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </td>
-            </tr>
-          ))
-        ):(
-          <tr><td colSpan="4" className="text-muted">No se encontraron usuarios.</td></tr>
+      {error && (
+        <div className="product-list-content" style={{ paddingTop: 0 }}>
+          <div className="no-results" style={{ paddingTop: 0 }}>
+            <div className="no-results-icon">⚠️</div>
+            <h2 className="no-results-title">{error}</h2>
+          </div>
+        </div>
+      )}
+
+      <div className="product-list-content">
+        <div className="product-list-filters">
+          <div className="filters-row">
+            <div className="filter-group">
+              <label className="filter-label">Buscar</label>
+              <input
+                type="text"
+                className="filter-input"
+                placeholder="Buscar por nombre o email..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') { e.preventDefault(); setSearch(searchInput); }
+                }}
+              />
+            </div>
+
+            <div className="filter-group" style={{ maxWidth: '220px' }}>
+              <label className="filter-label">Rol</label>
+              <select
+                className="filter-select"
+                value={roleFilter ?? ''}
+                onChange={(e) => setRoleFilter(e.target.value || null)}
+              >
+                <option value="">Todos</option>
+                <option value="user">Usuario</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <button className="filter-btn" onClick={() => setSearch(searchInput)}>
+              <i className="bi bi-search"></i>
+              Buscar
+            </button>
+
+            {(search || roleFilter) && (
+              <button className="filter-btn filter-btn-clear" onClick={() => { setSearchInput(''); setSearch(''); setRoleFilter(null); }}>
+                <i className="bi bi-x-circle"></i>
+                Limpiar
+              </button>
+            )}
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="loading-spinner-container">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : (
+          <>
+            <div className="product-list-results">
+              <span className="results-count">
+                Mostrando <strong>{filtered.length}</strong> de <strong>{users.length}</strong> usuarios
+              </span>
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="no-results">
+                <div className="no-results-icon">🔍</div>
+                <h2 className="no-results-title">No se encontraron usuarios</h2>
+                <p className="no-results-text">Ajusta los filtros o la búsqueda</p>
+                <button className="no-results-btn" onClick={() => { setSearchInput(''); setSearch(''); setRoleFilter(null); }}>
+                  <i className="bi bi-arrow-counterclockwise"></i>
+                  Limpiar filtros
+                </button>
+              </div>
+            ) : (
+              <div className="list-container">
+                {filtered.map(u => (
+                  <div className="list-row" key={u._id}>
+                    <div>
+                      <div className="list-title">{u.nombre || 'Sin nombre'}</div>
+                      <div className="list-subtitle">{u.email}</div>
+                    </div>
+                    <div className="list-meta">{u.role === 'admin' ? 'Administrador' : 'Usuario'}</div>
+                    <div>
+                      <select
+                        className="filter-select list-select"
+                        value={u.role}
+                        onChange={(e) => handleChangeRole(u._id, e.target.value)}
+                        disabled={updatingId === u._id}
+                      >
+                        <option value="user">Usuario</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+                    <div className="list-actions">
+                      {/* espacio para acciones futuras */}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
-        </tbody>
-      </table>
+      </div>
     </div>
   );
 };
