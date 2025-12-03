@@ -12,6 +12,7 @@ const Navbar = () => {
   const cartItemCount = getCartItemCount();
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,16 +22,28 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 993) setMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate("/");
     setDropdownOpen(false);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <nav className={`modern-navbar ${scrolled ? "scrolled" : ""}`}>
+    <nav className={`modern-navbar ${scrolled ? "scrolled" : ""} ${mobileMenuOpen ? "mobile-open" : ""}`}>
       <div className="navbar-container">
-        <Link to="/" className="brand-section">
+        <Link to="/" className="brand-section" onClick={closeMobileMenu}>
           <img
             src={logo}
             alt="logo"
@@ -39,7 +52,12 @@ const Navbar = () => {
           <span className="brand-text">Hermanos Jota</span>
         </Link>
 
-        <button className="mobile-toggle">
+        <button 
+          className={`mobile-toggle ${mobileMenuOpen ? "active" : ""}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -47,19 +65,19 @@ const Navbar = () => {
 
         <ul className="nav-center">
           <li>
-            <Link to="/" className="nav-link-modern">
+            <Link to="/" className="nav-link-modern" onClick={closeMobileMenu}>
               <i className="bi bi-house-door"></i>
               Inicio
             </Link>
           </li>
           <li>
-            <Link to="/productos" className="nav-link-modern">
+            <Link to="/productos" className="nav-link-modern" onClick={closeMobileMenu}>
               <i className="bi bi-grid"></i>
               Catálogo
             </Link>
           </li>
           <li>
-            <Link to="/contacto" className="nav-link-modern">
+            <Link to="/contacto" className="nav-link-modern" onClick={closeMobileMenu}>
               <i className="bi bi-envelope"></i>
               Contacto
             </Link>
@@ -67,19 +85,19 @@ const Navbar = () => {
           {user?.role === 'admin' && (
             <>
               <li>
-                <Link to="/admin/productos" className="nav-link-modern">
+                <Link to="/admin/productos" className="nav-link-modern" onClick={closeMobileMenu}>
                   <i className="bi bi-box-seam"></i>
                   Productos
                 </Link>
               </li>
               <li>
-                <Link to="/admin/usuarios" className="nav-link-modern">
+                <Link to="/admin/usuarios" className="nav-link-modern" onClick={closeMobileMenu}>
                   <i className="bi bi-people"></i>
                   Usuarios
                 </Link>
               </li>
               <li>
-                <Link to="/admin/ordenes" className="nav-link-modern">
+                <Link to="/admin/ordenes" className="nav-link-modern" onClick={closeMobileMenu}>
                   <i className="bi bi-receipt"></i>
                   Pedidos
                 </Link>
@@ -133,10 +151,10 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link to="/login" className="btn-modern btn-outline-modern">
+              <Link to="/login" className="btn-modern btn-outline-modern" onClick={closeMobileMenu}>
                 Ingresar
               </Link>
-              <Link to="/register" className="btn-modern btn-primary-modern">
+              <Link to="/register" className="btn-modern btn-primary-modern" onClick={closeMobileMenu}>
                 Registrarse
               </Link>
             </>
