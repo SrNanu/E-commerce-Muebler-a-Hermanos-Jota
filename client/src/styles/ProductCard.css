@@ -185,6 +185,17 @@
   transform: translateX(3px);
 }
 
+/* Botones pequeños para AdminOrdersPage */
+.product-card-btn-sm {
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.8rem !important;
+  white-space: nowrap;
+}
+
+.product-card-btn-sm i {
+  font-size: 0.9rem;
+}
+
 /* Rating stars */
 .product-card-rating {
   display: flex;
@@ -220,5 +231,14 @@
 
   .product-card-body {
     padding: 1.25rem;
+  }
+
+  .product-card-btn-sm {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .product-card-btn-sm i {
+    font-size: 0.85rem;
   }
 }

@@ -99,6 +99,7 @@ const AdminOrdersPage = () => {
     const filteredOrders = orders.filter(order =>
         (order._id || "").toLowerCase().includes(searchQuery.toLowerCase())
     )
+    
     return (
         <div className="product-list-container">
             <div className="product-list-header">
@@ -199,16 +200,28 @@ const AdminOrdersPage = () => {
                                         <div className="list-meta">Total: ${Number(order.total || 0).toLocaleString('es-AR')}</div>
                                         <div className="list-actions">
                                             {order.estado === 'pendiente' && (
-                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'procesando')}>Procesar<i className="bi bi-gear"></i></button>
+                                                <button className="product-card-btn product-card-btn-sm" onClick={() => updateOrderStatus(order._id, 'procesando')}>
+                                                    <i className="bi bi-gear"></i>
+                                                    <span>Procesar</span>
+                                                </button>
                                             )}
                                             {order.estado === 'procesando' && (
-                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'enviado')}>Enviar<i className="bi bi-truck"></i></button>
+                                                <button className="product-card-btn product-card-btn-sm" onClick={() => updateOrderStatus(order._id, 'enviado')}>
+                                                    <i className="bi bi-truck"></i>
+                                                    <span>Enviar</span>
+                                                </button>
                                             )}
                                             {order.estado === 'enviado' && (
-                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'entregado')}>Entregar<i className="bi bi-check2-circle"></i></button>
+                                                <button className="product-card-btn product-card-btn-sm" onClick={() => updateOrderStatus(order._id, 'entregado')}>
+                                                    <i className="bi bi-check2-circle"></i>
+                                                    <span>Entregar</span>
+                                                </button>
                                             )}
                                             {order.estado !== 'cancelado' && order.estado !== 'entregado' && (
-                                                <button className="product-card-btn" onClick={() => updateOrderStatus(order._id, 'cancelado')}>Cancelar<i className="bi bi-x-circle"></i></button>
+                                                <button className="product-card-btn product-card-btn-sm" onClick={() => updateOrderStatus(order._id, 'cancelado')}>
+                                                    <i className="bi bi-x-circle"></i>
+                                                    <span>Cancelar</span>
+                                                </button>
                                             )}
                                         </div>
                                     </div>
