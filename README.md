@@ -22,13 +22,17 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
 ## ✨ Funcionalidades principales
 - **🛍️ Cliente**
   - 🔎 Exploración de productos con detalles individuales.
-  - 🛒 Carrito de compras: agregar, eliminar y modificar cantidades..
+  - 🛒 Carrito de compras: agregar, eliminar y modificar cantidades.
   - 💬 Formulario de contacto para comunicarse con la empresa.
+  - 📲 fomujlario de regitro.
+  - 💽 Historial de pedidos del cliente.
 - **🧰 Panel de administración**
   - 📦 Listado de productos con acceso restring
   - ➕ Creación de nuevos productos.
   - ✏️ Edición de productos existentes.
   - ❌ Eliminación de productos.
+  - 🕵️ Gestion de usuarios.
+  - 🖥️ Gestion de pedidos.
 ---
 
 ## 🛠️ Tecnologías utilizadas
@@ -42,6 +46,8 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
   - Express.js
   - MongoDB Atlas
   - Mongoose
+  - bcryptjs
+  - JSON Web Tokens
 - **Otros recursos:**  
   - GitHub Copilot (asistencia en el desarrollo)
   - CORS y middlewares personalizados
@@ -65,7 +71,9 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
 │
 └── client/                # Frontend con React + Vite
     ├── src/
+    │   ├── assets/        # recursos necesarios
     │   ├── components/    # Componentes reutilizables
+    │   ├── context/       # Contexto de la Api
     │   ├── styles/        # Archivos CSS
     │   ├── utils/         # Funciones auxiliares
     │   ├── App.jsx        # Rutas y estructura principal
@@ -115,16 +123,20 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
 
 ---
 ##📸 Rutas principales del frontend
-| Ruta                         | Descripción             |
-| ---------------------------- | ----------------------- |
-| `/`                          | Página de inicio        |
-| `/productos`                 | Catálogo general        |
-| `/productos/:id`             | Detalle de producto     |
-| `/carrito`                   | Carrito de compras      |
-| `/contacto`                  | Formulario de contacto  |
-| `/admin/productos`           | Panel de administración |
-| `/admin/crear-producto`      | Alta de producto        |
-| `/admin/editar-producto/:id` | Edición de producto     |
+| Ruta                         | Descripción             | Visibilida                                |
+| ---------------------------- | ----------------------- | ----------------------------------------- |
+| `/`                          | Página de inicio        | Todos                                     |
+| `/productos`                 | Catálogo general        | Todos                                     |
+| `/productos/:id`             | Detalle de producto     | Todos                                     |
+| `/carrito`                   | Carrito de compras      | Todos. Deben registrarse para Comprar     |
+| `/contacto`                  | Formulario de contacto  | Todos                                     |
+| `/perfil`                    | Perfil del cliente      | Cliente Registrado y administrador        |
+| `/mis-pedidos`               | Historial de compras    | Cliente Registrado y administrador        |
+| `/admin/productos`           | Panel de administración | administrador                             |
+| `/admin/usuarios`            | Gestor de cuentas       | administrador                             |
+| `/admin/ordenes`             | Gestor de pedidos       | administrador                             |
+| `/admin/crear-producto`      | Alta de producto        | administrador                             |
+| `/admin/editar-producto/:id` | Edición de producto     | administrador                             |
 ---
 
 ## 🧱 Arquitectura y decisiones
@@ -136,5 +148,6 @@ Este proyecto implementa un E-commerce funcional para la mueblería ficticia "He
 - Bootstrap para lograr un diseño responsive y rápido.
 - Arquitectura modular y limpia, separando backend y frontend.
 - Imágenes servidas por backend para evitar rutas relativas en el cliente.
+- bcryptjs y JSON Web Tokens para la seguriad de la aplicacion
 
 ---
