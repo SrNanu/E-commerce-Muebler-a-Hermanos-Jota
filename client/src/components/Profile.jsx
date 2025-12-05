@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const { user, logout } = useAuth();
+  const { clearCart } = useCart();
   const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogoutRequest = () => {
+    setShowConfirm(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    clearCart();
     logout();
     navigate('/');
+  };
+
+  const handleCancel = () => {
+    setShowConfirm(false);
   };
 
   if (!user) {
@@ -73,12 +85,22 @@ const Profile = () => {
               </div>
 
               <div className="d-grid gap-2">
-                <button 
-                  className="btn btn-danger"
-                  onClick={handleLogout}
-                >
-                  Cerrar Sesión
-                </button>
+                {!showConfirm ? (
+                  <button 
+                    className="btn btn-danger"
+                    onClick={handleLogoutRequest}
+                  >
+                    Cerrar Sesión
+                  </button>
+                ) : (
+                  <div className="alert alert-warning" role="alert">
+                    Al cerrar sesión se vaciará tu carrito. ¿Deseas continuar?
+                    <div className="mt-3 d-flex gap-2">
+                      <button className="btn btn-danger" onClick={handleLogoutConfirm}>Sí, cerrar sesión</button>
+                      <button className="btn btn-secondary" onClick={handleCancel}>Cancelar</button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

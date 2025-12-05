@@ -8,11 +8,12 @@ import "../styles/Navbar.css";
 const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
-  const { getCartItemCount } = useCart();
+  const { getCartItemCount, clearCart } = useCart();
   const cartItemCount = getCartItemCount();
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,10 +31,20 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogoutConfirm = () => {
+    clearCart();
     logout();
     navigate("/");
     setDropdownOpen(false);
+    setShowLogoutConfirm(false);
+  };
+
+  const handleLogoutRequest = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutConfirm(false);
   };
 
   const closeMobileMenu = () => {
@@ -126,30 +137,46 @@ const Navbar = () => {
               >
                 {user?.nombre?.charAt(0).toUpperCase() || "U"}
               </div>
-              <div className={`dropdown-menu-modern ${dropdownOpen ? "show" : ""}`}>
-                <Link
-                  to="/perfil"
-                  className="dropdown-item-modern"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <i className="bi bi-person-circle"></i>
-                  Mi Perfil
-                </Link>
-                <Link
-                  to="/mis-pedidos"
-                  className="dropdown-item-modern"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  <i className="bi bi-bag-check"></i>
-                  Mis Pedidos
-                </Link>
-                <div className="dropdown-item-modern" onClick={handleLogout}>
-                  <i className="bi bi-box-arrow-right"></i>
-                  Cerrar Sesión
+                <div className={`dropdown-menu-modern ${dropdownOpen ? "show" : ""}`}>
+                  <Link
+                    to="/perfil"
+                    className="dropdown-item-modern"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <i className="bi bi-person-circle"></i>
+                    Mi Perfil
+                  </Link>
+                  <Link
+                    to="/mis-pedidos"
+                    className="dropdown-item-modern"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <i className="bi bi-bag-check"></i>
+                    Mis Pedidos
+                  </Link>
+                  {!showLogoutConfirm ? (
+                    <div className="dropdown-item-modern" onClick={handleLogoutRequest}>
+                      <i className="bi bi-box-arrow-right"></i>
+                      Cerrar Sesión
+                    </div>
+                  ) : (
+                    <div className="dropdown-item-modern" style={{ display: 'block' }}>
+                      <div style={{ fontSize: '0.9rem', color: '#4a4a4a', marginBottom: '0.5rem' }}>
+                        Al cerrar sesión se vaciará tu carrito. ¿Deseas continuar?
+                      </div>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button className="btn-modern btn-primary-modern" onClick={handleLogoutConfirm}>
+                          Sí, cerrar sesión
+                        </button>
+                        <button className="btn-modern btn-outline-modern" onClick={handleCancelLogout}>
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ) : (
+            ) : (
             <>
               <Link to="/login" className="btn-modern btn-outline-modern" onClick={closeMobileMenu}>
                 Ingresar
